@@ -1,4 +1,6 @@
-export const CART = [
+import type { CartItem } from "../../../entites/cart/model";
+
+export const CART: CartItem[] = [
   {
     productId: 1,
     productName: "상품이름A",
