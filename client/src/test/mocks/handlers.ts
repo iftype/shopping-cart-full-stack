@@ -1,27 +1,17 @@
-import { http, graphql, HttpResponse } from "msw";
+import { getProductsHandler } from "./products/get-products";
+import { postProductHandler } from "./products/post-product";
+import { deleteProductHandler } from "./products/delete-product";
+
+import { getCartHandler } from "./cart/get-cart";
+import { patchCartHandler } from "./cart/patch-cart";
+import { deleteCartHandler } from "./cart/delete-cart";
 
 export const handlers = [
-  http.get("https://api.example.com/user", () => {
-    return HttpResponse.json({
-      firstName: "John",
-      lastName: "Maverick",
-    });
-  }),
-  graphql.query("ListMovies", () => {
-    return HttpResponse.json({
-      data: {
-        movies: [
-          {
-            title: "The Lord of The Rings",
-          },
-          {
-            title: "The Matrix",
-          },
-          {
-            title: "Star Wars: The Empire Strikes Back",
-          },
-        ],
-      },
-    });
-  }),
+  getProductsHandler,
+  postProductHandler,
+  deleteProductHandler,
+
+  getCartHandler,
+  patchCartHandler,
+  deleteCartHandler,
 ];

@@ -1,46 +1,24 @@
-it("receives a mocked response to a REST API request", async () => {
-  const response = await fetch("https://api.example.com/user");
+import { http, HttpResponse } from "msw";
+import { server } from "./mocks/node";
 
-  expect(response.status).toBe(200);
-  expect(response.statusText).toBe("OK");
-  expect(await response.json()).toEqual({
-    firstName: "John",
-    lastName: "Maverick",
-  });
-});
+describe("MSW 예제 테스트", () => {
+  it("GET /cart - 성공 케이스", async () => {
+    const response = await fetch("/cart");
+    const json = await response.json();
 
-it("receives a mocked response to a GraphQL API request", async () => {
-  const response = await fetch("https://api.example.com/graphql", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      query: `
-        query ListMovies {
-          movies {
-            title
-          }
-        }
-      `,
-    }),
+    expect(response.status).toBe(200);
+    expect(json.result).toBe("success");
+    expect(json.data.cartItems[0].productName).toBe("상품이름A");
   });
 
-  expect(response.status).toBe(200);
-  expect(response.statusText).toBe("OK");
-  expect(await response.json()).toEqual({
-    data: {
-      movies: [
-        {
-          title: "The Lord of The Rings",
-        },
-        {
-          title: "The Matrix",
-        },
-        {
-          title: "Star Wars: The Empire Strikes Back",
-        },
-      ],
-    },
+  it("GET /cart - 서버 에러(500) 실패 케이스", async () => {
+    server.use(
+      http.get("*/cart", () => {
+        return new HttpResponse(null, { status: 500 });
+      }),
+    );
+
+    const response = await fetch("/cart");
+    expect(response.status).toBe(500);
   });
 });
