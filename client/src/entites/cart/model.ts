@@ -1,13 +1,5 @@
 import type { Product } from "../product/model";
 
-export interface CartItemResponse {
-  productId: number;
-  productName: string;
-  productImg: string;
-  productPrice: number;
-  quantity: number;
-}
-
 export interface CartItem {
   product: Product;
   quantity: number;
