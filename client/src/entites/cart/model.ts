@@ -1,4 +1,6 @@
-export interface CartItem {
+import type { Product } from "../product/model";
+
+export interface CartItemResponse {
   productId: number;
   productName: string;
   productImg: string;
@@ -6,11 +8,16 @@ export interface CartItem {
   quantity: number;
 }
 
+export interface CartItem {
+  product: Product;
+  quantity: number;
+}
+
 export const FREE_SHIPPING_THRESHOLD = 100000;
 export const SHIPPING_FEE = 3000;
 
 export const calculateOrderPrice = (items: CartItem[]) => {
-  return items.reduce((sum, item) => sum + item.productPrice * item.quantity, 0);
+  return items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
 };
 
 export const calculateShippingFee = (orderPrice: number) => {

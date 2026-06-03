@@ -4,32 +4,15 @@ import {
   calculateTotalOrderPrice,
   FREE_SHIPPING_THRESHOLD,
   SHIPPING_FEE,
-  type CartItem,
 } from "../../entites/cart/model";
 
-const CART_MOCK: CartItem[] = [
-  {
-    productId: 1,
-    productName: "상품이름A",
-    productImg: "test.png",
-    productPrice: 30000,
-    quantity: 1,
-  },
-  {
-    productId: 2,
-    productName: "상품이름B",
-    productImg: "test.png",
-    productPrice: 40000,
-    quantity: 2,
-  },
-];
+import { CART } from "../mocks/cart/mock-data";
 
 describe("cart 계산 함수 테스트", () => {
   it("장바구니의 총 합을 계산한다 ", () => {
-    const orderPrice = calculateOrderPrice(CART_MOCK);
+    const orderPrice = calculateOrderPrice(CART);
     const result =
-      CART_MOCK[0].productPrice * CART_MOCK[0].quantity +
-      CART_MOCK[1].productPrice * CART_MOCK[1].quantity;
+      CART[0].product.price * CART[0].quantity + CART[1].product.price * CART[1].quantity;
 
     expect(orderPrice).toBe(result);
   });
@@ -50,7 +33,7 @@ describe("cart 계산 함수 테스트", () => {
   });
 
   it("총 주문 금액 구하기 ", () => {
-    const orderPrice = calculateOrderPrice(CART_MOCK);
+    const orderPrice = calculateOrderPrice(CART);
     const shippingFee = calculateShippingFee(orderPrice);
     const totalOrderPrice = calculateTotalOrderPrice(orderPrice, shippingFee);
     expect(totalOrderPrice).toBe(110000);

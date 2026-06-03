@@ -2,17 +2,11 @@ import type { CartItem } from "../../../entites/cart/model";
 
 export const CART: CartItem[] = [
   {
-    productId: 1,
-    productName: "상품이름A",
-    productImg: "test.png",
-    productPrice: 35000,
-    quantity: 2,
+    product: { id: 1, name: "상품이름A", imgUrl: "/test.png", price: 30000 },
+    quantity: 1,
   },
   {
-    productId: 2,
-    productName: "상품이름B",
-    productImg: "test.png",
-    productPrice: 35000,
+    product: { id: 2, name: "상품이름B", imgUrl: "/test.png", price: 40000 },
     quantity: 2,
   },
 ];
