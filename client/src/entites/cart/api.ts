@@ -20,12 +20,17 @@ export const toCartItem = (cartItem: CartItemDto): CartItem => {
   };
 };
 
+export interface CartUpdateRequest {
+  productId: number;
+  quantity: number;
+}
+
 export interface CartErrorResponse {
   result: "error";
   message: string;
 }
 
-export const updateCart = async (productId: number, quantity: number): Promise<void> => {
+export const updateCart = async ({ productId, quantity }: CartUpdateRequest): Promise<void> => {
   const response = await fetch(`/cart/${productId}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
