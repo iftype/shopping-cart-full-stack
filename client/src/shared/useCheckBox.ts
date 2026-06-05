@@ -1,31 +1,27 @@
 import { useEffect, useState } from "react";
 
-export const useCheckBox = (item: number[]) => {
-  const [checks, setChecks] = useState<number[]>([]);
+export const useCheckBox = (itemIds: number[]) => {
+  const [checks, setChecks] = useState<number[]>(() => {
+    const saved = localStorage.getItem("checked");
+    return saved ? JSON.parse(saved) : itemIds;
+  });
 
   useEffect(() => {
-    function init() {
-      setChecks(item);
-    }
-    init();
-  }, [item]);
+    localStorage.setItem("checked", JSON.stringify(checks));
+  }, [checks]);
+
+  const checkeds = checks.filter((id) => itemIds.includes(id));
 
   const toggleSelect = (id: number) => {
-    const isChecked = checks.includes(id);
-    if (isChecked) {
-      setChecks((prev) => {
-        const next = [...prev];
-        next.push(id);
-        return next;
-      });
-      return;
-    }
-    setChecks((prev) => {
-      const next = [...prev];
-      next.filter((item) => item !== id);
-      return next;
-    });
+    setChecks(() =>
+      checkeds.includes(id) ? checkeds.filter((check) => check !== id) : [...checkeds, id],
+    );
   };
 
-  return { checks, toggleSelect };
+  const toggleAll = () => {
+    const isAllChecked = itemIds.length > 0 && checkeds.length === itemIds.length;
+    setChecks(isAllChecked ? [] : itemIds);
+  };
+
+  return { checks, toggleSelect, toggleAll };
 };
