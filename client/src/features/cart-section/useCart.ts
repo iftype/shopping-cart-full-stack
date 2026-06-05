@@ -4,7 +4,6 @@ import {
   deleteCartProduct,
   getCart,
   updateCart,
-  type CartUpdateRequest,
 } from "../../entites/cart/api";
 
 type CartState =
@@ -38,27 +37,25 @@ export const useCart = () => {
     init();
   }, []);
 
-  const changeQuantity = async ({ productId, quantity }: CartUpdateRequest) => {
+  const changeQuantity = async (productId: number, quantity: number) => {
     if (state.status !== "success") return;
 
     await updateCart({ productId, quantity });
 
     setState({
       status: "success",
-      cart: state.cart.map((item) =>
-        item.product.id === productId ? { ...item, quantity } : item,
-      ),
+      cart: state.cart.map((item) => (item.product.id === productId ? { ...item, quantity } : item)),
     });
   };
 
-  const handleDelete = async (productId: string) => {
+  const handleDelete = async (productId: number) => {
     if (state.status !== "success") return;
 
-    await deleteCartProduct(productId);
+    await deleteCartProduct(String(productId));
 
     setState({
       status: "success",
-      cart: state.cart.filter((item) => item.product.id !== Number(productId)),
+      cart: state.cart.filter((item) => item.product.id !== productId),
     });
   };
 
