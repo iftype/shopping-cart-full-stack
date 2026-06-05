@@ -1,7 +1,5 @@
+import styles from "./Header.module.css";
+
 export const Header = () => {
-  return (
-    <>
-      <div>SHOP</div>
-    </>
-  );
+  return <div className={styles.header}>SHOP</div>;
 };

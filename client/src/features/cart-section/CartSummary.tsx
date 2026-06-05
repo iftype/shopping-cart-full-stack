@@ -4,6 +4,7 @@ import {
   calculateShippingFee,
   calculateTotalOrderPrice,
 } from "../../entites/cart/model";
+import styles from "./CartSummary.module.css";
 
 export const CartSummary = () => {
   const { cartItems, checks } = useCartContext();
@@ -14,10 +15,19 @@ export const CartSummary = () => {
   const totalOrderPrice = calculateTotalOrderPrice(orderPrice, shippingFee);
 
   return (
-    <div>
-      <div> 주문 금액: {orderPrice.toLocaleString()}원</div>
-      <div> 배송비: {shippingFee.toLocaleString()}원</div>
-      <div>총 결제 금액: {totalOrderPrice.toLocaleString()}원</div>
+    <div className={styles.container}>
+      <div className={styles.item}>
+        <span className={styles.itemTitle}>주문금액</span>
+        <span className={styles.itemContent}>{orderPrice.toLocaleString()}원</span>
+      </div>
+      <div className={styles.item}>
+        <span className={styles.itemTitle}>배송비</span>
+        <span className={styles.itemContent}>{shippingFee.toLocaleString()}원</span>
+      </div>
+      <div className={styles.item}>
+        <span className={styles.itemTitle}>총결제금액</span>
+        <span className={styles.itemContent}>{totalOrderPrice.toLocaleString()}원</span>
+      </div>
     </div>
   );
 };

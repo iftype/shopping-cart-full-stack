@@ -1,3 +1,5 @@
+import styles from "./BottomButton.module.css";
+
 export interface BottomButtonProps {
   onClick: () => void;
   disabled?: boolean;
@@ -6,7 +8,7 @@ export interface BottomButtonProps {
 
 export const BottomButton = ({ onClick, disabled = false, text = "" }: BottomButtonProps) => {
   return (
-    <button onClick={onClick} disabled={disabled}>
+    <button className={styles.button} onClick={onClick} disabled={disabled}>
       {text}
     </button>
   );

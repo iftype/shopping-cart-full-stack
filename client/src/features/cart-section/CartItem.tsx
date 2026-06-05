@@ -1,4 +1,5 @@
 import { type CartItem, MIN_QUANTITY } from "../../entites/cart/model";
+import styles from "./CartItem.module.css";
 
 export interface CartItemComponentProps {
   cartItem: CartItem;
@@ -10,22 +11,29 @@ export const CartItemComponent = ({ cartItem, onQuantityChange }: CartItemCompon
   const { id, price, name, imgUrl } = product;
 
   return (
-    <div>
-      <div>
-        <img src={imgUrl} />
+    <div className={styles.body}>
+      <div className={styles.imgBox}>
+        <img src={imgUrl} alt={name} />
       </div>
-
-      <div>{name}</div>
-      <div>{price.toLocaleString()}원</div>
-      <div>
-        <button
-          onClick={() => onQuantityChange(id, quantity - 1)}
-          disabled={quantity <= MIN_QUANTITY}
-        >
-          -
-        </button>
-        <span>{quantity}</span>
-        <button onClick={() => onQuantityChange(id, quantity + 1)}>+</button>
+      <div className={styles.info}>
+        <div className={styles.name}>{name}</div>
+        <div className={styles.price}>{price.toLocaleString()}원</div>
+        <div className={styles.stepper}>
+          <button
+            className={styles.stepperBtn}
+            onClick={() => onQuantityChange(id, quantity - 1)}
+            disabled={quantity <= MIN_QUANTITY}
+          >
+            -
+          </button>
+          <span className={styles.stepperValue}>{quantity}</span>
+          <button
+            className={styles.stepperBtn}
+            onClick={() => onQuantityChange(id, quantity + 1)}
+          >
+            +
+          </button>
+        </div>
       </div>
     </div>
   );
