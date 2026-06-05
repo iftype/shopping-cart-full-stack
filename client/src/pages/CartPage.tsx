@@ -1,9 +1,13 @@
+import { useNavigate } from "react-router";
 import { CartEmptySection, CartSection } from "../features/cart-section/CartSection";
+import { CartSummary } from "../features/cart-section/CartSummary";
+import { CartSubmitButton } from "../features/cart-section/CartSubmitButton";
+import { CartContext } from "../features/cart-section/cartContext";
 import { useCart } from "../features/cart-section/useCart";
+import { useCheckBox } from "../shared/useCheckBox";
 import { ErrorInfo } from "../shared/ErrorInfo";
 import { Header } from "../shared/Header";
 import { Spinner } from "../shared/Spinner";
-import { SubmitButton } from "../shared/SubmitButton";
 
 export const CartPage = () => {
   const { state, changeQuantity, handleDelete } = useCart();
@@ -12,6 +16,13 @@ export const CartPage = () => {
   const isSuccess = status === "success";
   const cartItems = isSuccess ? state.cart : [];
 
+  const itemIds = cartItems.map((item) => item.product.id);
+  const { checks, toggleSelect, toggleAll } = useCheckBox(itemIds);
+  const checkedItems = cartItems.filter((item) => checks.includes(item.product.id));
+
+  const navigate = useNavigate();
+  const handleOrder = () => navigate("/result", { state: { checkedItems } });
+
   return (
     <>
       <Header />
@@ -19,13 +30,21 @@ export const CartPage = () => {
       {status === "error" && <ErrorInfo message="카트를 불러오는 중입니다." />}
       {isSuccess && cartItems.length === 0 && <CartEmptySection />}
       {isSuccess && cartItems.length !== 0 && (
-        <CartSection
-          cartItems={cartItems}
-          changeQuantity={changeQuantity}
-          handleDelete={handleDelete}
-        />
+        <CartContext.Provider
+          value={{
+            cartItems,
+            checks,
+            toggleSelect,
+            toggleAll,
+            changeQuantity,
+            handleDelete,
+          }}
+        >
+          <CartSection />
+          <CartSummary />
+          <CartSubmitButton onSubmit={handleOrder} />
+        </CartContext.Provider>
       )}
-      <SubmitButton />
     </>
   );
 };
