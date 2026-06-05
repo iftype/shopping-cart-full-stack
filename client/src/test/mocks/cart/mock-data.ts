@@ -10,3 +10,7 @@ export const CART: CartItem[] = [
     quantity: 2,
   },
 ];
+
+
+
+
