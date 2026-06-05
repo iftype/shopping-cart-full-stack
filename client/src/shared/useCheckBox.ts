@@ -8,7 +8,7 @@ export const useCheckBox = (itemIds: number[]) => {
 
   useEffect(() => {
     localStorage.setItem("checked", JSON.stringify(checks));
-  }, [checks]);
+  }, [checks, itemIds.length]);
 
   const checkeds = checks.filter((id) => itemIds.includes(id));
 
