@@ -7,10 +7,14 @@ export interface CartItemComponentProps {
 
 export const CartItemComponent = ({ cartItem, onQuantityChange }: CartItemComponentProps) => {
   const { product, quantity } = cartItem;
-  const { id, price, name } = product;
+  const { id, price, name, imgUrl } = product;
 
   return (
     <div>
+      <div>
+        <img src={imgUrl} />
+      </div>
+
       <div>{name}</div>
       <div>{price.toLocaleString()}원</div>
       <div>

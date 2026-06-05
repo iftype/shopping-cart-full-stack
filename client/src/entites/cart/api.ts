@@ -1,5 +1,7 @@
 import type { CartItem } from "./model";
 
+const BASE_URL = import.meta.env.VITE_API_URL ?? "";
+
 export interface CartItemDto {
   productId: number;
   productName: string;
@@ -31,7 +33,7 @@ export interface CartErrorResponse {
 }
 
 export const updateCart = async ({ productId, quantity }: CartUpdateRequest): Promise<void> => {
-  const response = await fetch(`/cart/${productId}`, {
+  const response = await fetch(`${BASE_URL}/cart/${productId}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ quantity }),
@@ -43,7 +45,7 @@ export const updateCart = async ({ productId, quantity }: CartUpdateRequest): Pr
 };
 
 export const getCart = async (): Promise<CartItem[]> => {
-  const response = await fetch(`/cart`, {
+  const response = await fetch(`${BASE_URL}/cart`, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   });
@@ -57,7 +59,7 @@ export const getCart = async (): Promise<CartItem[]> => {
 };
 
 export const deleteCartProduct = async (productId: string): Promise<void> => {
-  const response = await fetch(`/cart/${productId}`, {
+  const response = await fetch(`${BASE_URL}/cart/${productId}`, {
     method: "DELETE",
   });
 
