@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { CartItem } from "../../entites/cart/model";
+import { type CartItem, isValidQuantity } from "../../entites/cart/model";
 import {
   deleteCartProduct,
   getCart,
@@ -39,6 +39,7 @@ export const useCart = () => {
 
   const changeQuantity = async (productId: number, quantity: number) => {
     if (state.status !== "success") return;
+    if (!isValidQuantity(quantity)) return;
 
     await updateCart({ productId, quantity });
 
