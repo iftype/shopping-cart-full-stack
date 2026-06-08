@@ -27,7 +27,7 @@ export const CartPage = () => {
     <>
       <Header />
       {status === "loading" && <Spinner />}
-      {status === "error" && <ErrorInfo message="카트를 불러오는 중입니다." />}
+      {state.status === "error" && <ErrorInfo message={state.error} />}
       {isSuccess && cartItems.length === 0 && <CartEmptySection />}
       {isSuccess && cartItems.length !== 0 && (
         <CartContext.Provider

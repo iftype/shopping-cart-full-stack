@@ -27,10 +27,7 @@ export const CartItemComponent = ({ cartItem, onQuantityChange }: CartItemCompon
             -
           </button>
           <span className={styles.stepperValue}>{quantity}</span>
-          <button
-            className={styles.stepperBtn}
-            onClick={() => onQuantityChange(id, quantity + 1)}
-          >
+          <button className={styles.stepperBtn} onClick={() => onQuantityChange(id, quantity + 1)}>
             +
           </button>
         </div>
