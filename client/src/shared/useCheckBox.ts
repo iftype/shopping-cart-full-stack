@@ -1,26 +1,30 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export const useCheckBox = (itemIds: number[]) => {
-  const [checks, setChecks] = useState<number[]>(() => {
-    const saved = localStorage.getItem("checked");
-    return saved ? JSON.parse(saved) : itemIds;
+  const [unchecks, setUnchecks] = useState<number[]>(() => {
+    const saved = localStorage.getItem("unchecked");
+    return saved ? JSON.parse(saved) : [];
   });
 
-  useEffect(() => {
-    localStorage.setItem("checked", JSON.stringify(checks));
-  }, [checks, itemIds.length]);
+  const checks = itemIds.filter((id) => !unchecks.includes(id));
 
-  const checkeds = checks.filter((id) => itemIds.includes(id));
+  const save = (next: number[]) => {
+    if (next.length === 0) localStorage.removeItem("unchecked");
+    else localStorage.setItem("unchecked", JSON.stringify(next));
+  };
 
   const toggleSelect = (id: number) => {
-    setChecks(() =>
-      checkeds.includes(id) ? checkeds.filter((check) => check !== id) : [...checkeds, id],
-    );
+    const next = unchecks.includes(id)
+      ? unchecks.filter((check) => check !== id)
+      : [...unchecks, id];
+    setUnchecks(next);
+    save(next);
   };
 
   const toggleAll = () => {
-    const isAllChecked = itemIds.length > 0 && checkeds.length === itemIds.length;
-    setChecks(isAllChecked ? [] : itemIds);
+    const next = checks.length === itemIds.length ? itemIds : [];
+    setUnchecks(next);
+    save(next);
   };
 
   return { checks, toggleSelect, toggleAll };
