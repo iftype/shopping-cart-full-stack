@@ -2,7 +2,6 @@ import { useNavigate } from "react-router";
 import { CartEmptySection, CartSection } from "../features/cart-section/CartSection";
 import { CartSummary } from "../features/cart-section/CartSummary";
 import { CartSubmitButton } from "../features/cart-section/CartSubmitButton";
-import { CartContext } from "../features/cart-section/cartContext";
 import { useCart } from "../features/cart-section/useCart";
 import { useCheckBox } from "../shared/useCheckBox";
 import { ErrorInfo } from "../shared/ErrorInfo";
@@ -30,20 +29,18 @@ export const CartPage = () => {
       {state.status === "error" && <ErrorInfo message={state.error} />}
       {isSuccess && cartItems.length === 0 && <CartEmptySection />}
       {isSuccess && cartItems.length !== 0 && (
-        <CartContext.Provider
-          value={{
-            cartItems,
-            checks,
-            toggleSelect,
-            toggleAll,
-            changeQuantity,
-            handleDelete,
-          }}
-        >
-          <CartSection />
-          <CartSummary />
-          <CartSubmitButton onSubmit={handleOrder} />
-        </CartContext.Provider>
+        <>
+          <CartSection
+            cartItems={cartItems}
+            checks={checks}
+            toggleSelect={toggleSelect}
+            toggleAll={toggleAll}
+            changeQuantity={changeQuantity}
+            handleDelete={handleDelete}
+          />
+          <CartSummary checkedItems={checkedItems} />
+          <CartSubmitButton checkedItems={checkedItems} onSubmit={handleOrder} />
+        </>
       )}
     </>
   );

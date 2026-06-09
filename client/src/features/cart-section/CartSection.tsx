@@ -1,12 +1,25 @@
+import type { CartItem } from "../../entites/cart/model";
 import { CheckList, CheckListItem } from "../../shared/CheckBox";
-import { useCartContext } from "./cartContext";
 import { CartItemComponent } from "./CartItem";
 import styles from "./CartSection.module.css";
 
-export const CartSection = () => {
-  const { cartItems, checks, toggleSelect, toggleAll, changeQuantity, handleDelete } =
-    useCartContext();
+export interface CartSectionType {
+  cartItems: CartItem[];
+  checks: number[];
+  toggleSelect: (id: number) => void;
+  toggleAll: () => void;
+  changeQuantity: (id: number, quantity: number) => void;
+  handleDelete: (id: number) => void;
+}
 
+export const CartSection = ({
+  cartItems,
+  checks,
+  toggleSelect,
+  toggleAll,
+  changeQuantity,
+  handleDelete,
+}: CartSectionType) => {
   const totalCount = cartItems.length;
   const isAllChecked = totalCount > 0 && checks.length === totalCount;
 

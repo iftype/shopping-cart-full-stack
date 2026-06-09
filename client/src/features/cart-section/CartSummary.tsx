@@ -1,4 +1,4 @@
-import { useCartContext } from "./cartContext";
+import type { CartItem } from "../../entites/cart/model";
 import {
   calculateOrderPrice,
   calculateShippingFee,
@@ -6,10 +6,11 @@ import {
 } from "../../entites/cart/model";
 import styles from "./CartSummary.module.css";
 
-export const CartSummary = () => {
-  const { cartItems, checks } = useCartContext();
-  const checkedItems = cartItems.filter((item) => checks.includes(item.product.id));
+interface CartSummaryProps {
+  checkedItems: CartItem[];
+}
 
+export const CartSummary = ({ checkedItems }: CartSummaryProps) => {
   const orderPrice = calculateOrderPrice(checkedItems);
   const shippingFee = calculateShippingFee(orderPrice);
   const totalOrderPrice = calculateTotalOrderPrice(orderPrice, shippingFee);

@@ -1,9 +1,11 @@
-import { useCartContext } from "./cartContext";
+import type { CartItem } from "../../entites/cart/model";
 import { BottomButton } from "../../shared/BottomButton";
 
-export const CartSubmitButton = ({ onSubmit }: { onSubmit: () => void }) => {
-  const { cartItems, checks } = useCartContext();
-  const checkedItems = cartItems.filter((item) => checks.includes(item.product.id));
+interface CartSubmitButtonProps {
+  checkedItems: CartItem[];
+  onSubmit: () => void;
+}
 
-  return <BottomButton onClick={onSubmit} disabled={checkedItems.length === 0} text="주문확인" />;
-};
+export const CartSubmitButton = ({ checkedItems, onSubmit }: CartSubmitButtonProps) => (
+  <BottomButton onClick={onSubmit} disabled={checkedItems.length === 0} text="주문확인" />
+);
