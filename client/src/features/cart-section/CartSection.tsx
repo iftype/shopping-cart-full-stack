@@ -1,3 +1,4 @@
+import { CheckList, CheckListItem } from "../../shared/CheckBox";
 import { useCartContext } from "./cartContext";
 import { CartItemComponent } from "./CartItem";
 import styles from "./CartSection.module.css";
@@ -16,41 +17,25 @@ export const CartSection = () => {
         <p className={styles.subtitle}>현재 {totalCount}종류의 상품이 담겨있습니다.</p>
       </div>
 
-      <div className={styles.checkboxRow}>
-        <input
-          id="check-all"
-          type="checkbox"
-          checked={isAllChecked}
-          onChange={toggleAll}
-        />
-        <label htmlFor="check-all">전체선택</label>
-        <span className={styles.checkCount}>({checks.length}/{totalCount})</span>
-      </div>
-
+      <span className={styles.checkCount}>
+        ({checks.length}/{totalCount})
+      </span>
       <hr className={styles.divider} />
-
-      <div className={styles.list}>
+      <CheckList allChecked={isAllChecked} onToggleAll={toggleAll} label="전체선택">
         {cartItems.map((cartItem) => {
           const id = cartItem.product.id;
           return (
-            <div key={id} className={styles.listItem}>
-              <div className={styles.itemHeader}>
-                <div className={styles.itemCheckbox}>
-                  <input
-                    type="checkbox"
-                    checked={checks.includes(id)}
-                    onChange={() => toggleSelect(id)}
-                  />
-                </div>
-                <button className={styles.deleteButton} onClick={() => handleDelete(id)}>
-                  삭제
-                </button>
-              </div>
+            <CheckListItem
+              key={id}
+              checked={checks.includes(id)}
+              onToggle={() => toggleSelect(id)}
+              onDelete={() => handleDelete(id)}
+            >
               <CartItemComponent cartItem={cartItem} onQuantityChange={changeQuantity} />
-            </div>
+            </CheckListItem>
           );
         })}
-      </div>
+      </CheckList>
     </div>
   );
 };

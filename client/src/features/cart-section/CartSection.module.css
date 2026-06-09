@@ -14,26 +14,6 @@
   margin-bottom: 16px;
 }
 
-.checkboxRow {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.checkboxRow input[type='checkbox'] {
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-  accent-color: #000000;
-}
-
-.checkboxRow label {
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-}
-
 .checkCount {
   font-size: 12px;
   color: #8C8C8C;
@@ -43,45 +23,6 @@
   border: none;
   border-top: 1px solid #E5E5E5;
   margin: 0;
-}
-
-.list {
-  margin-top: 0;
-}
-
-.listItem {
-  margin-top: 16px;
-}
-
-.itemHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.itemCheckbox {
-  display: flex;
-  align-items: center;
-}
-
-.itemCheckbox input[type='checkbox'] {
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-  accent-color: #000000;
-}
-
-.deleteButton {
-  height: 24px;
-  padding: 0 10px;
-  border: 1px solid #0000001A;
-  background: #ffffff;
-  color: #0A0D13;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  border-radius: 2px;
 }
 
 .notice {
