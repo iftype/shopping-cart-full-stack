@@ -35,21 +35,22 @@ export const useCart = () => {
   }, []);
 
   const changeQuantity = async (productId: number, quantity: number) => {
-    try {
-      if (state.status !== "success") return;
-      if (!isValidQuantity(quantity)) return;
+    if (state.status !== "success") return;
+    if (!isValidQuantity(quantity)) return;
 
+    const optimistic = state.cart;
+    setState({
+      status: "success",
+      cart: state.cart.map((item) =>
+        item.product.id === productId ? { ...item, quantity } : item,
+      ),
+    });
+
+    try {
       await updateCart({ productId, quantity });
-      setState({
-        status: "success",
-        cart: state.cart.map((item) =>
-          item.product.id === productId ? { ...item, quantity } : item,
-        ),
-      });
     } catch (error) {
-      if (!(error instanceof Error)) {
-        throw error;
-      }
+      if (!(error instanceof Error)) throw error;
+      setState({ status: "success", cart: optimistic });
       window.alert(error.message);
     }
   };
