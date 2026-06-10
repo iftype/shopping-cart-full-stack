@@ -1,1 +1,2 @@
-export const DEFAULT_IMAGE = "https://example.com/image.jpg";
+const SERVER_URL = process.env.SERVER_URL ?? "http://localhost:3000";
+export const DEFAULT_IMAGE = `${SERVER_URL}/images/default.svg`;

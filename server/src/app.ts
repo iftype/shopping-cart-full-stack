@@ -1,10 +1,14 @@
 import express from "express";
 import cors from "cors";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
 import type ProductController from "./features/product/product.controller.js";
 import CartController from "./features/cart/cart.controller.js";
 import handleProductError from "./features/product/product.middleware.js";
 import { globalErrorHandler } from "./errors/error.middleware.js";
 import handleCartError from "./features/cart/cart.middleware.js";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export function createApp({
   productController,
@@ -16,6 +20,7 @@ export function createApp({
   const app = express();
   app.use(cors());
   app.use(express.json());
+  app.use("/images", express.static(join(__dirname, "../public/images")));
 
   app.get("/products", productController.getProductAll);
   app.get("/products/:productId", productController.getProduct);

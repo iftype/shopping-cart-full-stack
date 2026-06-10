@@ -1,4 +1,5 @@
 import { DB } from "./db/in-memory-db.js";
+import { seed } from "./db/seed.js";
 import { createApp } from "./app.js";
 import ProductController from "./features/product/product.controller.js";
 import CartController from "./features/cart/cart.controller.js";
@@ -22,6 +23,8 @@ const cartService = new CartService(cartRepository);
 const deleteProductUseCase = new DeleteProductUseCase(productService, cartService);
 const productController = new ProductController(productService, deleteProductUseCase);
 const cartController = new CartController(cartService);
+
+seed(DB);
 
 const app = createApp({ productController, cartController });
 app.listen(PORT, () => {
