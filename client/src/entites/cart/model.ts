@@ -7,7 +7,7 @@ export interface CartItem {
 
 export const FREE_SHIPPING_THRESHOLD = 100000;
 export const SHIPPING_FEE = 3000;
-export const MIN_QUANTITY = 0;
+export const MIN_QUANTITY = 1;
 
 export const isValidQuantity = (quantity: number): boolean => {
   return quantity >= MIN_QUANTITY;
