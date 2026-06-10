@@ -3,10 +3,11 @@ import styles from "./CartItem.module.css";
 
 export interface CartItemComponentProps {
   cartItem: CartItem;
+  isMutating: boolean;
   onQuantityChange: (id: number, quantity: number) => void;
 }
 
-export const CartItemComponent = ({ cartItem, onQuantityChange }: CartItemComponentProps) => {
+export const CartItemComponent = ({ cartItem, isMutating, onQuantityChange }: CartItemComponentProps) => {
   const { product, quantity } = cartItem;
   const { id, price, name, imgUrl } = product;
 
@@ -22,12 +23,16 @@ export const CartItemComponent = ({ cartItem, onQuantityChange }: CartItemCompon
           <button
             className={styles.stepperBtn}
             onClick={() => onQuantityChange(id, quantity - 1)}
-            disabled={quantity <= MIN_QUANTITY}
+            disabled={isMutating || quantity <= MIN_QUANTITY}
           >
             -
           </button>
           <span className={styles.stepperValue}>{quantity}</span>
-          <button className={styles.stepperBtn} onClick={() => onQuantityChange(id, quantity + 1)}>
+          <button
+            className={styles.stepperBtn}
+            onClick={() => onQuantityChange(id, quantity + 1)}
+            disabled={isMutating}
+          >
             +
           </button>
         </div>

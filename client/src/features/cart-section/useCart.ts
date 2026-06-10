@@ -12,6 +12,8 @@ export const useCart = () => {
     status: "loading",
   });
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [isMutating, setIsMutating] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
 
   useEffect(() => {
     async function init() {
@@ -49,6 +51,7 @@ export const useCart = () => {
     });
 
     timerRef.current = setTimeout(async () => {
+      setIsMutating(true);
       try {
         const { quantity: checkQty } = await updateCart({ productId, quantity });
         setState((prev) => {
@@ -63,7 +66,9 @@ export const useCart = () => {
       } catch (error) {
         if (!(error instanceof Error)) throw error;
         setState({ status: "success", cart: optimistic });
-        window.alert(error.message);
+        setServerError(error.message);
+      } finally {
+        setIsMutating(false);
       }
     }, 300);
   };
@@ -81,13 +86,15 @@ export const useCart = () => {
       if (!(error instanceof Error)) {
         throw error;
       }
-      window.alert(error.message);
+      setServerError(error.message);
     }
   };
 
   return {
     state,
+    isMutating,
     changeQuantity,
     handleDelete,
+    serverError,
   };
 };

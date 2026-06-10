@@ -6,6 +6,7 @@ import styles from "./CartSection.module.css";
 export interface CartSectionType {
   cartItems: CartItem[];
   checks: number[];
+  isMutating: boolean;
   toggleSelect: (id: number) => void;
   toggleAll: () => void;
   changeQuantity: (id: number, quantity: number) => void;
@@ -15,6 +16,7 @@ export interface CartSectionType {
 export const CartSection = ({
   cartItems,
   checks,
+  isMutating,
   toggleSelect,
   toggleAll,
   changeQuantity,
@@ -44,7 +46,7 @@ export const CartSection = ({
               onToggle={() => toggleSelect(id)}
               onDelete={() => handleDelete(id)}
             >
-              <CartItemComponent cartItem={cartItem} onQuantityChange={changeQuantity} />
+              <CartItemComponent cartItem={cartItem} isMutating={isMutating} onQuantityChange={changeQuantity} />
             </CheckListItem>
           );
         })}

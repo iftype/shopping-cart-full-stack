@@ -9,7 +9,7 @@ import { Header } from "../shared/Header";
 import { Spinner } from "../shared/Spinner";
 
 export const CartPage = () => {
-  const { state, changeQuantity, handleDelete } = useCart();
+  const { state, isMutating, changeQuantity, handleDelete, serverError } = useCart();
   const { status } = state;
 
   const isSuccess = status === "success";
@@ -25,6 +25,7 @@ export const CartPage = () => {
   return (
     <>
       <Header />
+      {serverError && <p>에러 토스트:{serverError}</p>}
       {status === "loading" && <Spinner />}
       {state.status === "error" && <ErrorInfo message={state.error} />}
       {isSuccess && cartItems.length === 0 && <CartEmptySection />}
@@ -33,6 +34,7 @@ export const CartPage = () => {
           <CartSection
             cartItems={cartItems}
             checks={checks}
+            isMutating={isMutating}
             toggleSelect={toggleSelect}
             toggleAll={toggleAll}
             changeQuantity={changeQuantity}
