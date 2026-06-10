@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { type CartItem, isValidQuantity } from "../../entites/cart/model";
 import { deleteCartProduct, getCarts, updateCart } from "../../entites/cart/api";
 
@@ -11,7 +11,6 @@ export const useCart = () => {
   const [state, setState] = useState<CartState>({
     status: "loading",
   });
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [isMutating, setIsMutating] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
 
@@ -40,37 +39,25 @@ export const useCart = () => {
   const changeQuantity = async (productId: number, quantity: number) => {
     if (state.status !== "success") return;
     if (!isValidQuantity(quantity)) return;
-    if (timerRef.current) clearTimeout(timerRef.current);
 
-    const optimistic = state.cart;
-    setState({
-      status: "success",
-      cart: state.cart.map((item) =>
-        item.product.id === productId ? { ...item, quantity } : item,
-      ),
-    });
-
-    timerRef.current = setTimeout(async () => {
-      setIsMutating(true);
-      try {
-        const { quantity: checkQty } = await updateCart({ productId, quantity });
-        setState((prev) => {
-          if (prev.status !== "success") return prev;
-          return {
-            status: "success",
-            cart: prev.cart.map((item) =>
-              item.product.id === productId ? { ...item, quantity: checkQty } : item,
-            ),
-          };
-        });
-      } catch (error) {
-        if (!(error instanceof Error)) throw error;
-        setState({ status: "success", cart: optimistic });
-        setServerError(error.message);
-      } finally {
-        setIsMutating(false);
-      }
-    }, 300);
+    setIsMutating(true);
+    try {
+      const { quantity: checkQty } = await updateCart({ productId, quantity });
+      setState((prev) => {
+        if (prev.status !== "success") return prev;
+        return {
+          status: "success",
+          cart: prev.cart.map((item) =>
+            item.product.id === productId ? { ...item, quantity: checkQty } : item,
+          ),
+        };
+      });
+    } catch (error) {
+      if (!(error instanceof Error)) throw error;
+      setServerError(error.message);
+    } finally {
+      setIsMutating(false);
+    }
   };
 
   const handleDelete = async (productId: number) => {
