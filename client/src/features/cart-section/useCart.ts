@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { type CartItem, isValidQuantity } from "../../entites/cart/model";
 import { deleteCartProduct, getCart, updateCart } from "../../entites/cart/api";
 
@@ -11,7 +11,8 @@ export const useCart = () => {
   const [state, setState] = useState<CartState>({
     status: "loading",
   });
-
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  
   useEffect(() => {
     async function init() {
       try {
@@ -37,6 +38,7 @@ export const useCart = () => {
   const changeQuantity = async (productId: number, quantity: number) => {
     if (state.status !== "success") return;
     if (!isValidQuantity(quantity)) return;
+    if (timerRef.current) clearTimeout(timerRef.current);
 
     const optimistic = state.cart;
     setState({
@@ -46,13 +48,15 @@ export const useCart = () => {
       ),
     });
 
-    try {
-      await updateCart({ productId, quantity });
-    } catch (error) {
-      if (!(error instanceof Error)) throw error;
-      setState({ status: "success", cart: optimistic });
-      window.alert(error.message);
-    }
+    timerRef.current = setTimeout(async () => {
+      try {
+        await updateCart({ productId, quantity });
+      } catch (error) {
+        if (!(error instanceof Error)) throw error;
+        setState({ status: "success", cart: optimistic });
+        window.alert(error.message);
+      }
+    }, 300);
   };
 
   const handleDelete = async (productId: number) => {
