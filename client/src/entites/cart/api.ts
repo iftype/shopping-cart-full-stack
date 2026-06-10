@@ -32,7 +32,10 @@ export interface CartErrorResponse {
   message: string;
 }
 
-export const updateCart = async ({ productId, quantity }: CartUpdateRequest): Promise<void> => {
+export const updateCart = async ({
+  productId,
+  quantity,
+}: CartUpdateRequest): Promise<{ productId: number; quantity: number }> => {
   const response = await fetch(`${BASE_URL}/cart/${productId}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
@@ -42,9 +45,11 @@ export const updateCart = async ({ productId, quantity }: CartUpdateRequest): Pr
     const error: CartErrorResponse = await response.json();
     throw new Error(error.message);
   }
+  const json = await response.json();
+  return json.data;
 };
 
-export const getCart = async (): Promise<CartItem[]> => {
+export const getCarts = async (): Promise<CartItem[]> => {
   const response = await fetch(`${BASE_URL}/cart`, {
     method: "GET",
     headers: { "Content-Type": "application/json" },

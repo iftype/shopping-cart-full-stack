@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { type CartItem, isValidQuantity } from "../../entites/cart/model";
-import { deleteCartProduct, getCart, updateCart } from "../../entites/cart/api";
+import { deleteCartProduct, getCarts, updateCart } from "../../entites/cart/api";
 
 type CartState =
   | { status: "loading" }
@@ -12,11 +12,11 @@ export const useCart = () => {
     status: "loading",
   });
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  
+
   useEffect(() => {
     async function init() {
       try {
-        const cartItems = await getCart();
+        const cartItems = await getCarts();
         setState({
           status: "success",
           cart: cartItems,
@@ -50,7 +50,16 @@ export const useCart = () => {
 
     timerRef.current = setTimeout(async () => {
       try {
-        await updateCart({ productId, quantity });
+        const { quantity: checkQty } = await updateCart({ productId, quantity });
+        setState((prev) => {
+          if (prev.status !== "success") return prev;
+          return {
+            status: "success",
+            cart: prev.cart.map((item) =>
+              item.product.id === productId ? { ...item, quantity: checkQty } : item,
+            ),
+          };
+        });
       } catch (error) {
         if (!(error instanceof Error)) throw error;
         setState({ status: "success", cart: optimistic });
