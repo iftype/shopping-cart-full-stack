@@ -17,7 +17,7 @@ export const CartPage = () => {
 
   const itemIds = cartItems.map((item) => item.product.id);
   const { checks, toggleSelect, toggleAll } = useCheckBox(itemIds);
-  const checkedItems = cartItems.filter((item) => !checks.includes(item.product.id));
+  const checkedItems = cartItems.filter((item) => checks.includes(item.product.id));
 
   const navigate = useNavigate();
   const handleOrder = () => navigate("/result", { state: { checkedItems } });

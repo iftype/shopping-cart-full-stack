@@ -1,4 +1,4 @@
-import { type CartItem, MIN_QUANTITY } from "../../entites/cart/model";
+import { type CartItem, MAX_QUANTITY, MIN_QUANTITY } from "../../entites/cart/model";
 import styles from "./CartItem.module.css";
 
 export interface CartItemComponentProps {
@@ -7,7 +7,11 @@ export interface CartItemComponentProps {
   onQuantityChange: (id: number, quantity: number) => void;
 }
 
-export const CartItemComponent = ({ cartItem, isMutating, onQuantityChange }: CartItemComponentProps) => {
+export const CartItemComponent = ({
+  cartItem,
+  isMutating,
+  onQuantityChange,
+}: CartItemComponentProps) => {
   const { product, quantity } = cartItem;
   const { id, price, name, imgUrl } = product;
 
@@ -31,7 +35,7 @@ export const CartItemComponent = ({ cartItem, isMutating, onQuantityChange }: Ca
           <button
             className={styles.stepperBtn}
             onClick={() => onQuantityChange(id, quantity + 1)}
-            disabled={isMutating}
+            disabled={isMutating || quantity >= MAX_QUANTITY}
           >
             +
           </button>
