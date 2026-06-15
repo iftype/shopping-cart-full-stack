@@ -53,7 +53,9 @@
       type: "USABLE",
       message: null,
       apply: true,
-    }
+    },
+    discount_rate: null,
+    discount_fixed: 5000,
   },
   {
     id: "BOGO",
@@ -64,7 +66,9 @@
       type: "USABLE",
       message: null,
       apply: false,
-    }
+    },
+    discount_rate: null,
+    discount_fixed: 4500,
   },
   {
     id: "FREESHIPPING",
@@ -75,7 +79,9 @@
       type: "USABLE",
       message: null,
       apply: false,
-    }
+    },
+    discount_rate: null,
+    discount_fixed: 3000,
   },
   {
     id: "MIRACLESALE",
@@ -86,7 +92,9 @@
       type: "UNUSABLE",
       message: "현재 사용 가능 시간이 아닙니다",
       apply: false,
-    }
+    },
+    discount_rate: 30,
+    discount_fixed: null,
   },
   ],
   best_coupons: ["FIXED5000","FREESHIPPING"],
