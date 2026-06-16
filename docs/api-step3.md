@@ -68,7 +68,7 @@
       apply: false,
     },
     discount_rate: null,
-    discount_fixed: 4500,
+    discount_fixed: 0,
   },
   {
     id: "FREESHIPPING",
