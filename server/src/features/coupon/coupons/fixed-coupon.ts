@@ -4,6 +4,7 @@ import {
   CouponProps,
   CouponResult,
   CouponStatus,
+  DiscountView,
   Fixed,
   LowPrice,
 } from "../coupon.type.js";
@@ -53,6 +54,10 @@ export default class FixedCoupon implements Coupon {
     if (summary.orderPrice < this.rule.price)
       return { type: "UNUSABLE", message: `최소 주문 금액: ${this.rule.price}` };
     return { type: "USABLE", message: "" };
+  }
+
+  discountView(): DiscountView {
+    return { type: "FIXED", amount: this.discountType.discountFixed };
   }
 
   execute(args: CouponProps): CouponResult {

@@ -73,14 +73,15 @@ describe("BogoCoupon", () => {
     expect(bogo().canUse(props(1000, cart)).type).toBe("UNUSABLE");
   });
 
-  it("기준 수량 이상 상품 중 단가가 가장 높은 상품 1개를 무료 처리한다", () => {
+  it("기준 수량 이상 상품 중 단가가 가장 높은 상품 1개를 사은품으로 지급한다", () => {
     const cart = [
       { productId: "1", quantity: 2, price: 1000 },
       { productId: "2", quantity: 2, price: 3000 },
     ];
     const result = bogo().execute(props(8000, cart));
 
-    expect(result.summary.discountPrice).toBe(3000); // 단가 높은 상품(2) 1개 무료
+    // 2+1은 금액 할인이 아니라 사은품 지급이므로 결제 금액은 그대로다
+    expect(result.summary.discountPrice).toBe(0);
     expect(result.gifts).toContainEqual({ productId: "2", quantity: 1 });
   });
 });

@@ -1,5 +1,12 @@
 import { CouponEntity } from "../coupon.entity.js";
-import { Coupon, CouponProps, CouponResult, Bogo, CouponStatus } from "../coupon.type.js";
+import {
+  Coupon,
+  CouponProps,
+  CouponResult,
+  Bogo,
+  CouponStatus,
+  DiscountView,
+} from "../coupon.type.js";
 
 interface BogoCouponProps {
   id: string;
@@ -39,23 +46,21 @@ export default class BogoCoupon implements Coupon {
     return { type: "USABLE", message: "" };
   }
 
+  discountView(): DiscountView {
+    return { type: "FIXED", amount: 0 };
+  }
+
   execute(args: CouponProps): CouponResult {
     const { buyQuantity, getQuantity } = this.discountType;
-    const { checkoutCartList, summary, gifts } = args;
+    const { checkoutCartList, gifts } = args;
     const giftTarget = checkoutCartList
       .filter((cart) => cart.quantity >= buyQuantity)
       .sort((a, b) => b.price - a.price)[0];
 
     if (!giftTarget) return args;
 
-    const discountPrice = summary.discountPrice + giftTarget.price * getQuantity;
     return {
       ...args,
-      summary: {
-        ...summary,
-        discountPrice,
-        totalPrice: summary.orderPrice - discountPrice + summary.deliveryPrice,
-      },
       gifts: [...gifts, { productId: giftTarget.productId, quantity: getQuantity }],
     };
   }

@@ -57,6 +57,19 @@ describe("CheckoutService.checkout", () => {
     expect(result.summary.discountPrice).toBe(5000);
   });
 
+  it("BOGO 적용 시 결제금액은 그대로지만 사은품을 응답에 내려준다", async () => {
+    const service = createService([BOGO]);
+
+    const result = await service.checkout({
+      checkedProductIds: ["1", "2"],
+      hardDeliveryPlace: false,
+      selectedCouponIds: ["BOGO"],
+    });
+
+    expect(result.summary.discountPrice).toBe(0); // 증정이라 결제금액 변화 없음
+    expect(result.gifts).toEqual([{ productId: "1", quantity: 1 }]); // 단가 높은 상품(1) 1개 증정
+  });
+
   it("최소금액 미달 쿠폰은 선택해도 적용되지 않는다", async () => {
     const highMin = coupon({
       id: "HIGH",

@@ -7,7 +7,11 @@ export interface Coupon {
 
   canUse: (args: CouponProps) => CouponStatus;
   execute: (args: CouponProps) => CouponResult;
+  discountView: (args: CouponProps) => DiscountView;
 }
+
+// 프론트 계산용
+export type DiscountView = { type: "RATE"; rate: number } | { type: "FIXED"; amount: number };
 export type LowPrice = { type: "LOW_PRICE"; price: number };
 export type Time = { type: "TIME"; startAt: string; endAt: string };
 
@@ -28,7 +32,7 @@ export type Summary = {
   deliveryPrice: number;
   totalPrice: number;
 };
-type Gift = {
+export type Gift = {
   productId: string;
   quantity: number;
 };

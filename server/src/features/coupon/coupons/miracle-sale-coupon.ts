@@ -4,6 +4,7 @@ import {
   CouponProps,
   CouponResult,
   CouponStatus,
+  DiscountView,
   MiralceSale,
   Time,
 } from "../coupon.type.js";
@@ -57,6 +58,10 @@ export default class MiracleSaleCoupon implements Coupon {
         message: `사용시간 오전${this.rule.startAt}부터 ${this.rule.endAt}까지`,
       };
     return { type: "USABLE", message: "" };
+  }
+
+  discountView(): DiscountView {
+    return { type: "RATE", rate: this.discountType.discountRate };
   }
 
   execute(args: CouponProps): CouponResult {

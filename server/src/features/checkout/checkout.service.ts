@@ -2,7 +2,15 @@ import { BadRequestError } from "../../errors/http-error.js";
 import { type CartDetail } from "../cart/cart.repository.js";
 import CartService from "../cart/cart.service.js";
 import { type CouponRepository } from "../coupon/coupon.repository.js";
-import { Coupon, CouponProps, CouponResult, CouponStatus, Summary } from "../coupon/coupon.type.js";
+import {
+  Coupon,
+  CouponProps,
+  CouponResult,
+  CouponStatus,
+  DiscountView,
+  Gift,
+  Summary,
+} from "../coupon/coupon.type.js";
 import {
   BASE_DELIVERY_PRICE,
   HARD_DELIVERY_PRICE,
@@ -25,6 +33,7 @@ export interface CouponResponseStatus extends CouponStatus {
 export interface CouponInfo {
   coupon: Coupon;
   status: CouponResponseStatus;
+  discount: DiscountView;
 }
 
 export interface CheckoutResult {
@@ -33,6 +42,7 @@ export interface CheckoutResult {
   selectedItems: SelectedItem[];
   coupons: CouponInfo[];
   bestCouponIds: string[];
+  gifts: Gift[];
 }
 
 export default class CheckoutService {
@@ -61,10 +71,11 @@ export default class CheckoutService {
           ...status,
           apply: status.type === "USABLE" && selectedCouponIds.includes(coupon.id),
         },
+        discount: coupon.discountView(props),
       };
     });
 
-    const { summary } = this.calculate(
+    const { summary, gifts } = this.calculate(
       coupons.filter((info) => info.status.apply).map((info) => info.coupon),
       props,
     );
@@ -80,6 +91,7 @@ export default class CheckoutService {
       })),
       coupons,
       bestCouponIds: await this.getBestCoupons(props),
+      gifts,
     };
   }
 
@@ -91,22 +103,32 @@ export default class CheckoutService {
     if (usable.length === 0) return [];
     if (usable.length === 1) return [usable[0].id];
 
-    const bestCoupon: { id: string[]; price: number } = {
+    const bestCoupon: { id: string[]; cost: number } = {
       id: [],
-      price: props.summary.totalPrice,
+      cost: props.summary.totalPrice,
     };
 
-    // 2장 조합 적용 시 최저가 검색
     for (let i = 0; i < usable.length; i++) {
       for (let j = i + 1; j < usable.length; j++) {
-        const { summary } = this.calculate([usable[i], usable[j]], props);
-        if (summary.totalPrice < bestCoupon.price) {
-          bestCoupon.price = summary.totalPrice;
+        const result = this.calculate([usable[i], usable[j]], props);
+        const cost = result.summary.totalPrice - this.giftValue(result, props);
+        if (cost < bestCoupon.cost) {
+          bestCoupon.cost = cost;
           bestCoupon.id = [usable[i].id, usable[j].id];
         }
       }
     }
     return bestCoupon.id;
+  }
+
+  private giftValue(result: CouponResult, props: CouponProps): number {
+    let total = 0;
+    for (const gift of result.gifts) {
+      const item = props.checkoutCartList.find((c) => c.productId === gift.productId);
+      if (!item) continue;
+      total += item.price * gift.quantity;
+    }
+    return total;
   }
 
   private calculate(coupons: Coupon[], props: CouponProps): CouponResult {

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import type CheckoutService from "./checkout.service.js";
-import type { CouponInfo } from "./checkout.service.js";
+import type { CheckoutResult, CouponInfo } from "./checkout.service.js";
 import { BadRequestError } from "../../errors/http-error.js";
 
 export default class CheckoutController {
@@ -19,33 +19,33 @@ export default class CheckoutController {
       selectedCouponIds: Array.isArray(selected_coupons) ? selected_coupons.map(String) : [],
     });
 
+    const { summary, selectedItems, coupons, bestCouponIds, gifts }: CheckoutResult = result;
     res.status(200).json({
       price_summary: {
-        order_price: result.summary.orderPrice,
-        dicount_price: result.summary.discountPrice,
-        delivery_price: result.summary.deliveryPrice,
-        total_price: result.summary.totalPrice,
+        order_price: summary.orderPrice,
+        dicount_price: summary.discountPrice,
+        delivery_price: summary.deliveryPrice,
+        total_price: summary.totalPrice,
       },
-      // hard_delivery_price: result.hardDeliveryPrice,
-      selected_items: result.selectedItems.map((item) => ({
+      // hard_delivery_price: hardDeliveryPrice,
+      selected_items: selectedItems.map((item) => ({
         id: item.id,
         product: { name: item.name, price: item.price, thumbnail: item.thumbnail },
         quantity: item.quantity,
       })),
-      coupons_info: result.coupons.map((status) => this.toCouponInfo(status)),
-      best_coupons: result.bestCouponIds,
+      coupons_info: coupons.map((status) => this.toCouponInfo(status)),
+      best_coupons: bestCouponIds,
+      gifts: gifts.map((gift) => ({ product_id: gift.productId, quantity: gift.quantity })),
     });
   };
 
-  private toCouponInfo({ coupon, status }: CouponInfo) {
-    const discount = coupon.discountType;
+  private toCouponInfo({ coupon, status, discount }: CouponInfo) {
     return {
       id: coupon.id,
       name: coupon.name,
       expiriation_date: coupon.expiriationDate,
       status,
-      discount_rate: "discountRate" in discount ? discount.discountRate : null,
-      discount_fixed: "discountFixed" in discount ? discount.discountFixed : null,
+      discount,
     };
   }
 }

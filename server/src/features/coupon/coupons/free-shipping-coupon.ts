@@ -4,6 +4,7 @@ import {
   CouponProps,
   CouponResult,
   CouponStatus,
+  DiscountView,
   FreeShipping,
   LowPrice,
 } from "../coupon.type.js";
@@ -54,6 +55,10 @@ export default class FreeShippingCoupon implements Coupon {
     if (summary.deliveryPrice === 0)
       return { type: "UNUSABLE", message: `배달비가 0원일때 사용 불가` };
     return { type: "USABLE", message: "" };
+  }
+
+  discountView({ summary }: CouponProps): DiscountView {
+    return { type: "FIXED", amount: summary.deliveryPrice };
   }
 
   execute(args: CouponProps): CouponResult {

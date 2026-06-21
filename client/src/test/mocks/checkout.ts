@@ -38,8 +38,7 @@ export const postCheckoutHandler = http.post("*/checkout", () => {
           message: "최소 주문 금액: 100000",
           apply: false,
         },
-        discount_rate: null,
-        discount_fixed: 5000,
+        discount: { type: "FIXED" as const, amount: 5000 },
       },
       {
         id: "BOGO",
@@ -50,8 +49,7 @@ export const postCheckoutHandler = http.post("*/checkout", () => {
           message: "",
           apply: false,
         },
-        discount_rate: null,
-        discount_fixed: null,
+        discount: { type: "FIXED" as const, amount: 0 },
       },
       {
         id: "FREESHIPPING",
@@ -62,8 +60,7 @@ export const postCheckoutHandler = http.post("*/checkout", () => {
           message: "",
           apply: false,
         },
-        discount_rate: null,
-        discount_fixed: null,
+        discount: { type: "FIXED" as const, amount: 3000 },
       },
       {
         id: "MIRACLESALE",
@@ -74,11 +71,11 @@ export const postCheckoutHandler = http.post("*/checkout", () => {
           message: "사용시간 오전04:00부터 07:00까지",
           apply: false,
         },
-        discount_rate: 30,
-        discount_fixed: null,
+        discount: { type: "RATE" as const, rate: 30 },
       },
     ],
     best_coupons: ["BOGO", "FREESHIPPING"],
+    gifts: [],
   });
 });
 
