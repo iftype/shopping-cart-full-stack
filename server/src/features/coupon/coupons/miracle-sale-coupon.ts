@@ -1,5 +1,12 @@
 import { CouponEntity } from "../coupon.entity.js";
-import { Coupon, CouponProps, CouponResult, MiralceSale, Time } from "../coupon.type.js";
+import {
+  Coupon,
+  CouponProps,
+  CouponResult,
+  CouponStatus,
+  MiralceSale,
+  Time,
+} from "../coupon.type.js";
 
 interface MiracleSaleCouponProps {
   id: string;
@@ -40,10 +47,16 @@ export default class MiracleSaleCoupon implements Coupon {
     });
   }
 
-  canUse(): boolean {
-    if (new Date() > this.expiriationDate) return false;
+  canUse(): CouponStatus {
+    if (new Date() > this.expiriationDate)
+      return { type: "UNUSABLE", message: `만료일: ${this.expiriationDate}` };
     const now = new Date().toTimeString().slice(0, 5);
-    return this.rule.startAt <= now && now < this.rule.endAt;
+    if (now < this.rule.startAt || now >= this.rule.endAt)
+      return {
+        type: "UNUSABLE",
+        message: `사용시간 오전${this.rule.startAt}부터 ${this.rule.endAt}까지`,
+      };
+    return { type: "USABLE", message: "" };
   }
 
   execute(args: CouponProps): CouponResult {

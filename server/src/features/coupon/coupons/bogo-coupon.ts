@@ -1,5 +1,5 @@
 import { CouponEntity } from "../coupon.entity.js";
-import { Coupon, CouponProps, CouponResult, Bogo } from "../coupon.type.js";
+import { Coupon, CouponProps, CouponResult, Bogo, CouponStatus } from "../coupon.type.js";
 
 interface BogoCouponProps {
   id: string;
@@ -30,9 +30,13 @@ export default class BogoCoupon implements Coupon {
     });
   }
 
-  canUse({ checkoutCartList }: CouponProps): boolean {
-    if (new Date() > this.expiriationDate) return false;
-    return checkoutCartList.some((cart) => cart.quantity >= this.discountType.buyQuantity);
+  canUse({ checkoutCartList }: CouponProps): CouponStatus {
+    if (new Date() > this.expiriationDate)
+      return { type: "UNUSABLE", message: `만료일: ${this.expiriationDate}` };
+    if (!checkoutCartList.some((cart) => cart.quantity >= this.discountType.buyQuantity))
+      return { type: "UNUSABLE", message: "2개 이상이여야 사용할 수 있는 쿠폰입니다" };
+
+    return { type: "USABLE", message: "" };
   }
 
   execute(args: CouponProps): CouponResult {

@@ -1,5 +1,12 @@
 import { CouponEntity } from "../coupon.entity.js";
-import { Coupon, CouponProps, CouponResult, FreeShipping, LowPrice } from "../coupon.type.js";
+import {
+  Coupon,
+  CouponProps,
+  CouponResult,
+  CouponStatus,
+  FreeShipping,
+  LowPrice,
+} from "../coupon.type.js";
 
 interface FixedCouponProps {
   id: string;
@@ -39,9 +46,14 @@ export default class FreeShippingCoupon implements Coupon {
     });
   }
 
-  canUse({ summary }: CouponProps): boolean {
-    if (new Date() > this.expiriationDate) return false;
-    return summary.orderPrice >= this.rule.price;
+  canUse({ summary }: CouponProps): CouponStatus {
+    if (new Date() > this.expiriationDate)
+      return { type: "UNUSABLE", message: `만료일: ${this.expiriationDate}` };
+    if (summary.orderPrice < this.rule.price)
+      return { type: "UNUSABLE", message: `최소 주문 금액: ${this.rule.price}` };
+    if (summary.deliveryPrice === 0)
+      return { type: "UNUSABLE", message: `배달비가 0원일때 사용 불가` };
+    return { type: "USABLE", message: "" };
   }
 
   execute(args: CouponProps): CouponResult {

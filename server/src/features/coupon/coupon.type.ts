@@ -5,11 +5,16 @@ export interface Coupon {
   discountType: DiscountType;
   rule?: LowPrice | Time;
 
-  canUse: (args: CouponProps) => boolean;
+  canUse: (args: CouponProps) => CouponStatus;
   execute: (args: CouponProps) => CouponResult;
 }
 export type LowPrice = { type: "LOW_PRICE"; price: number };
 export type Time = { type: "TIME"; startAt: string; endAt: string };
+
+export type CouponStatus = {
+  type: "USABLE" | "UNUSABLE";
+  message: string;
+};
 
 type CheckoutCart = {
   productId: string;
@@ -17,7 +22,7 @@ type CheckoutCart = {
   price: number;
 };
 
-type Summary = {
+export type Summary = {
   orderPrice: number;
   discountPrice: number;
   deliveryPrice: number;

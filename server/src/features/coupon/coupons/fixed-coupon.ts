@@ -1,5 +1,12 @@
 import { CouponEntity } from "../coupon.entity.js";
-import { Coupon, CouponProps, CouponResult, Fixed, LowPrice } from "../coupon.type.js";
+import {
+  Coupon,
+  CouponProps,
+  CouponResult,
+  CouponStatus,
+  Fixed,
+  LowPrice,
+} from "../coupon.type.js";
 
 interface FixedCouponProps {
   id: string;
@@ -40,9 +47,12 @@ export default class FixedCoupon implements Coupon {
     });
   }
 
-  canUse({ summary }: CouponProps): boolean {
-    if (new Date() > this.expiriationDate) return false;
-    return summary.orderPrice >= this.rule.price;
+  canUse({ summary }: CouponProps): CouponStatus {
+    if (new Date() > this.expiriationDate)
+      return { type: "UNUSABLE", message: `만료일: ${this.expiriationDate}` };
+    if (summary.orderPrice < this.rule.price)
+      return { type: "UNUSABLE", message: `최소 주문 금액: ${this.rule.price}` };
+    return { type: "USABLE", message: "" };
   }
 
   execute(args: CouponProps): CouponResult {
