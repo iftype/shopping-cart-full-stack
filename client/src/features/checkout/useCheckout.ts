@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { checkoutApi, type CheckoutDto } from "../../entites/checkout/api";
+import { checkoutApi, type Checkout } from "../../entites/checkout/api";
 
 type CheckoutState =
   | { status: "loading" }
-  | { status: "success"; data: CheckoutDto }
+  | { status: "success"; data: Checkout }
   | { status: "error"; error: string };
 
 export const useCheckout = (checkedProductIds: number[]) => {
