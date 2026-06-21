@@ -14,3 +14,7 @@ export const SummaryItem = ({ title, content }: SummaryItemProps) => {
     </div>
   );
 };
+
+export const SummaryContainer = ({ children }: { children: ReactNode }) => {
+  return <div className="container">{children}</div>;
+};
