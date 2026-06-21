@@ -9,7 +9,7 @@ interface MiracleSaleCouponProps {
   rule: Time;
 }
 
-export class MiracleSaleCoupon implements Coupon {
+export default class MiracleSaleCoupon implements Coupon {
   readonly id: string;
   readonly name: string;
   readonly expiriationDate: Date;

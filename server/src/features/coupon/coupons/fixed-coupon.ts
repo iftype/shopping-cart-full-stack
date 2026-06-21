@@ -9,7 +9,7 @@ interface FixedCouponProps {
   rule: LowPrice;
 }
 
-export class FixedCoupon implements Coupon {
+export default class FixedCoupon implements Coupon {
   readonly id: string;
   readonly name: string;
   readonly expiriationDate: Date;
