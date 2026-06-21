@@ -1,8 +1,8 @@
 export type Summary = {
-  order_price: number;
-  dicount_price: number;
-  delivery_price: number;
-  total_price: number;
+  orderPrice: number;
+  discountPrice: number;
+  deliveryPrice: number;
+  totalPrice: number;
 };
 
 export type CartItem = {
@@ -20,7 +20,7 @@ export type Discount = { type: "RATE"; rate: number } | { type: "FIXED"; amount:
 export type Coupon = {
   id: string;
   name: string;
-  expiriation_date: string;
+  expirationDate: string;
   status: {
     type: "UNUSABLE" | "USABLE";
     message: string;
@@ -30,6 +30,6 @@ export type Coupon = {
 };
 
 export type Gift = {
-  product_id: string;
+  productId: string;
   quantity: number;
 };
