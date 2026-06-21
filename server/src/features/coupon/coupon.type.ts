@@ -52,9 +52,9 @@ export interface FreeShipping {
   type: "FREESHIPPING";
 }
 
-export interface Miralces {
+export interface MiralceSale {
   type: "MIRACLESALE";
   discountRate: number; // 할인 퍼센트
 }
 
-export type DiscountType = Fixed | Bogo | FreeShipping | Miralces;
+export type DiscountType = Fixed | Bogo | FreeShipping | MiralceSale;
