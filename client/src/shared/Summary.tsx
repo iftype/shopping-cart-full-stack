@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import styles from "./SummaryItem.module.css";
+import styles from "./Summary.module.css";
 
 interface SummaryItemProps {
   title: string;
