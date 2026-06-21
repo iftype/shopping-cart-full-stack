@@ -1,7 +1,7 @@
 export interface CouponEntity {
   id: string; // 아이디
   name: string; // 이름
-  expiriation_date: string; // 만료일
+  expiriation_date: Date; // 만료일
 
   rule_type: "LOW_PRICE" | "TIME";
   limit_price: number | null; // 최소금액
