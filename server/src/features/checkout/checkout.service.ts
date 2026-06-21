@@ -63,13 +63,17 @@ export default class CheckoutService {
     const props = this.formatProps(checked, hardDeliveryPlace);
 
     const allCoupons = await this.couponRepository.findAll();
+    const bestCouponIds = await this.getBestCoupons(props);
+
+    const appliedCouponIds = selectedCouponIds.length > 0 ? selectedCouponIds : bestCouponIds;
+
     const coupons = allCoupons.map((coupon): CouponInfo => {
       const status = coupon.canUse(props);
       return {
         coupon,
         status: {
           ...status,
-          apply: status.type === "USABLE" && selectedCouponIds.includes(coupon.id),
+          apply: status.type === "USABLE" && appliedCouponIds.includes(coupon.id),
         },
         discount: coupon.discountView(props),
       };
@@ -90,7 +94,7 @@ export default class CheckoutService {
         quantity: item.quantity,
       })),
       coupons,
-      bestCouponIds: await this.getBestCoupons(props),
+      bestCouponIds,
       gifts,
     };
   }
