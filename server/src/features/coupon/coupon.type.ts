@@ -45,8 +45,8 @@ export interface Fixed {
 }
 export interface Bogo {
   type: "BOGO";
-  gift: number;
-  giftQuantity: number;
+  buyQuantity: number;
+  getQuantity: number;
 }
 export interface FressShipping {
   type: "FREESHIPPING";
