@@ -90,4 +90,16 @@ describe("CheckoutService.checkout", () => {
     expect(result.bestCouponIds).toEqual(expect.arrayContaining(["FIX", "BOGO"]));
     expect(result.bestCouponIds).toHaveLength(2);
   });
+
+  it("usable 쿠폰이 1개만 있는 경우, 해당 1개 쿠폰을 단독 추천한다", async () => {
+    const service = createService([BOGO]);
+
+    const result = await service.checkout({
+      checkedProductIds: ["1", "2"],
+      hardDeliveryPlace: false,
+      selectedCouponIds: [],
+    });
+
+    expect(result.bestCouponIds).toEqual(["BOGO"]);
+  });
 });

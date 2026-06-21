@@ -83,16 +83,20 @@ export default class CheckoutService {
     };
   }
 
-  // 추천: 서로 다른 종류 2장 조합 중 최저 결제금액이 되는 쿠폰 id 조합
   async getBestCoupons(props: CouponProps): Promise<string[]> {
     const coupons = await this.couponRepository.findAll();
     const usable = coupons.filter((coupon) => coupon.canUse(props).type === "USABLE");
+
+    // 예외처리( 한장만 사용 가능할때 한장으로)
+    if (usable.length === 0) return [];
+    if (usable.length === 1) return [usable[0].id];
 
     const bestCoupon: { id: string[]; price: number } = {
       id: [],
       price: props.summary.totalPrice,
     };
 
+    // 2장 조합 적용 시 최저가 검색
     for (let i = 0; i < usable.length; i++) {
       for (let j = i + 1; j < usable.length; j++) {
         const { summary } = this.calculate([usable[i], usable[j]], props);
@@ -105,7 +109,6 @@ export default class CheckoutService {
     return bestCoupon.id;
   }
 
-  // 쿠폰들을 정액 -> 정률(MIRACLESALE) 순으로 정렬해 차례 적용
   private calculate(coupons: Coupon[], props: CouponProps): CouponResult {
     const rank = (coupon: Coupon) => (coupon.discountType.type === "MIRACLESALE" ? 1 : 0);
     return [...coupons]
