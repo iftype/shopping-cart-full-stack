@@ -20,7 +20,7 @@ export const CartPage = () => {
   const checkedItems = cartItems.filter((item) => checks.includes(item.product.id));
 
   const navigate = useNavigate();
-  const handleOrder = () => navigate("/result", { state: { checkedItems } });
+  const handleOrder = () => navigate("/checkout", { state: { checkedItems } });
 
   return (
     <>

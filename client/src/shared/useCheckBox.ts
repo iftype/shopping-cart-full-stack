@@ -33,5 +33,5 @@ export const useCheckBox = (itemIds: number[]) => {
     save(next);
   };
 
-  return { checked: currentChecks, toggleSelect, toggleAll };
+  return { checks: currentChecks, toggleSelect, toggleAll };
 };
