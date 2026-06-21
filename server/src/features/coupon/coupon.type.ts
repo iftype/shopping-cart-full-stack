@@ -48,7 +48,7 @@ export interface Bogo {
   buyQuantity: number;
   getQuantity: number;
 }
-export interface FressShipping {
+export interface FreeShipping {
   type: "FREESHIPPING";
 }
 
@@ -57,4 +57,4 @@ export interface Miralces {
   discountRate: number; // 할인 퍼센트
 }
 
-export type DiscountType = Fixed | Bogo | FressShipping | Miralces;
+export type DiscountType = Fixed | Bogo | FreeShipping | Miralces;
