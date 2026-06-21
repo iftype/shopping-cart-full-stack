@@ -51,7 +51,11 @@ export default class MiracleSaleCoupon implements Coupon {
   canUse(): CouponStatus {
     if (new Date() > this.expiriationDate)
       return { type: "UNUSABLE", message: `만료일: ${this.expiriationDate}` };
-    const now = new Date().toTimeString().slice(0, 5);
+    
+    // 배포 서버(UTC)에서도 KST(UTC+9) 기준으로 정확히 시:분(HH:mm)을 판별하기 위한 타임존 처리
+    const kstDate = new Date(new Date().getTime() + 9 * 60 * 60 * 1000);
+    const now = kstDate.toISOString().slice(11, 16);
+
     if (now < this.rule.startAt || now >= this.rule.endAt)
       return {
         type: "UNUSABLE",
