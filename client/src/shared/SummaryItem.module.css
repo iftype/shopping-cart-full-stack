@@ -1,0 +1,18 @@
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 42px;
+}
+
+.itemTitle {
+  font-weight: 700;
+  font-size: 16px;
+  color: #0a0d13;
+}
+
+.itemContent {
+  font-weight: 700;
+  font-size: 24px;
+  color: #0a0d13;
+}

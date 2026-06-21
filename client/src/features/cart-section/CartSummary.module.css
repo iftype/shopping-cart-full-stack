@@ -1,23 +1,4 @@
 .container {
   padding: 24px;
-  border-top: 1px solid #E5E5E5;
-}
-
-.item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  min-height: 42px;
-}
-
-.itemTitle {
-  font-weight: 700;
-  font-size: 16px;
-  color: #0A0D13;
-}
-
-.itemContent {
-  font-weight: 700;
-  font-size: 24px;
-  color: #0A0D13;
+  border-top: 1px solid #e5e5e5;
 }
