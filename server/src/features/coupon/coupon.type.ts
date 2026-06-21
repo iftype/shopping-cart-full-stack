@@ -1,10 +1,8 @@
-// 쿠폰 룰
-
-interface Coupon {
+export interface Coupon {
   id: string; // 아이디
   name: string; // 이름
   expiriationDate: Date; // 만료일
-  type: "FIXED" | "BOGO" | "FREESHIPPING" | "MIRACLESALE";
+  DiscountType: DiscountType;
   rule?: LowPrice | Time;
 
   canUse: (args: CouponProps) => boolean;
@@ -41,24 +39,24 @@ export interface CouponResult {
   gifts: Gift[];
 }
 
-export interface FixedCoupon extends Coupon {
+export interface Fixed {
   type: "FIXED";
   discountFixed: number; // 할인금액
   rule: LowPrice;
 }
-export interface BogoCoupon extends Coupon {
+export interface Bogo {
   type: "BOGO";
   gift: number;
   giftQuantity: number;
 }
-interface FressShippingCoupon extends Coupon {
+interface FressShipping {
   type: "FREESHIPPING";
 }
 
-interface MiralcesCoupon extends Coupon {
+interface Miralces {
   type: "MIRACLESALE";
   discountRate: number; // 할인 퍼센트
   rule: Time;
 }
 
-export type CouponType = FixedCoupon | BogoCoupon | FressShippingCoupon | MiralcesCoupon;
+export type DiscountType = Fixed | Bogo | FressShipping | Miralces;
