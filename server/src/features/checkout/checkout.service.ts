@@ -146,10 +146,9 @@ export default class CheckoutService {
     }));
 
     const orderPrice = checkoutCartList.reduce((acc, cart) => acc + cart.price * cart.quantity, 0);
-    const deliveryPrice =
-      orderPrice >= FREE_DELIVERY_THRESHOLD
-        ? 0
-        : BASE_DELIVERY_PRICE + (hardDeliveryPlace ? HARD_DELIVERY_PRICE : 0);
+    const baseDeliveryPrice = orderPrice >= FREE_DELIVERY_THRESHOLD ? 0 : BASE_DELIVERY_PRICE;
+    const hardDeliveryPrice = hardDeliveryPlace ? HARD_DELIVERY_PRICE : 0;
+    const deliveryPrice = baseDeliveryPrice + hardDeliveryPrice;
 
     return {
       checkoutCartList,
