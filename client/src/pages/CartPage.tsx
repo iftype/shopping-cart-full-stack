@@ -7,6 +7,7 @@ import { useCheckBox } from "../shared/useCheckBox";
 import { ErrorInfo } from "../shared/ErrorInfo";
 import { Header } from "../shared/Header";
 import { Spinner } from "../shared/Spinner";
+import { PageTitle } from "../shared/PageTitle";
 
 export const CartPage = () => {
   const { state, isMutating, changeQuantity, handleDelete, serverError } = useCart();
@@ -31,6 +32,10 @@ export const CartPage = () => {
       {isSuccess && cartItems.length === 0 && <CartEmptySection />}
       {isSuccess && cartItems.length !== 0 && (
         <>
+          <PageTitle
+            title="장바구니"
+            subtitle={`현재 ${cartItems.length}종류의 상품이 담겨있습니다.`}
+          />
           <CartSection
             cartItems={cartItems}
             checks={checks}
