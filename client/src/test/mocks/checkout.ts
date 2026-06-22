@@ -33,17 +33,19 @@ export const postCheckoutHandler = http.post("*/checkout", () => {
         id: "FIXED5000",
         name: "5,000원 할인 쿠폰",
         expiriation_date: "2026-11-30T00:00:00.000Z",
+        rule: { type: "LOW_PRICE" as const, price: 100000 },
         status: {
           type: "UNUSABLE" as const,
-          message: "최소 주문 금액: 100000",
+          message: "",
           apply: false,
         },
         discount: { type: "FIXED" as const, amount: 5000 },
       },
       {
         id: "BOGO",
-        name: "2+1 쿠폰",
+        name: "2개 구매 시 1개 무료 쿠폰",
         expiriation_date: "2026-06-30T00:00:00.000Z",
+        rule: null,
         status: {
           type: "USABLE" as const,
           message: "",
@@ -53,8 +55,9 @@ export const postCheckoutHandler = http.post("*/checkout", () => {
       },
       {
         id: "FREESHIPPING",
-        name: "무료 배송 쿠폰",
+        name: "5만원 이상 구매 시 무료 배송 쿠폰",
         expiriation_date: "2026-08-31T00:00:00.000Z",
+        rule: { type: "LOW_PRICE" as const, price: 50000 },
         status: {
           type: "USABLE" as const,
           message: "",
@@ -64,11 +67,12 @@ export const postCheckoutHandler = http.post("*/checkout", () => {
       },
       {
         id: "MIRACLESALE",
-        name: "30% 타임 세일 쿠폰",
+        name: "미라클모닝 30% 할인 쿠폰",
         expiriation_date: "2026-07-31T00:00:00.000Z",
+        rule: { type: "TIME" as const, startAt: "04:00", endAt: "07:00" },
         status: {
           type: "UNUSABLE" as const,
-          message: "사용시간 오전04:00부터 07:00까지",
+          message: "",
           apply: false,
         },
         discount: { type: "RATE" as const, rate: 30 },

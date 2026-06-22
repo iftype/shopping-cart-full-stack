@@ -44,6 +44,7 @@ export default class CheckoutController {
       id: coupon.id,
       name: coupon.name,
       expiriation_date: coupon.expiriationDate,
+      rule: coupon.rule ?? null,
       status,
       discount,
     };

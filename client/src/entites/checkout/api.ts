@@ -1,4 +1,4 @@
-import type { CartItem, Coupon, Discount, Gift, Summary } from "./model";
+import type { CartItem, Coupon, Discount, Gift, Rule, Summary } from "./model";
 
 export interface CheckoutProps {
   checked_product_list: string[];
@@ -18,6 +18,7 @@ interface CheckoutDto {
     id: string;
     name: string;
     expiriation_date: string;
+    rule: Rule | null;
     status: Coupon["status"];
     discount: Discount;
   }[];
@@ -58,6 +59,7 @@ const toCheckout = (res: CheckoutDto): Checkout => ({
     id: coupon.id,
     name: coupon.name,
     expirationDate: formatDate(coupon.expiriation_date),
+    rule: coupon.rule,
     status: {
       type: coupon.status.type,
       message: coupon.status.message,

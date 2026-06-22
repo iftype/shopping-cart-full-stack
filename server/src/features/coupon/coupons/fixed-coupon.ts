@@ -50,9 +50,9 @@ export default class FixedCoupon implements Coupon {
 
   canUse({ summary }: CouponProps): CouponStatus {
     if (new Date() > this.expiriationDate)
-      return { type: "UNUSABLE", message: `만료일: ${this.expiriationDate}` };
+      return { type: "UNUSABLE", message: "만료된 쿠폰입니다" };
     if (summary.orderPrice < this.rule.price)
-      return { type: "UNUSABLE", message: `최소 주문 금액: ${this.rule.price}` };
+      return { type: "UNUSABLE", message: "최소 주문 금액을 충족하지 못했습니다" };
     return { type: "USABLE", message: "" };
   }
 

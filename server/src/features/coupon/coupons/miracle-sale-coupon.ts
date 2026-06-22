@@ -50,16 +50,13 @@ export default class MiracleSaleCoupon implements Coupon {
 
   canUse(): CouponStatus {
     if (new Date() > this.expiriationDate)
-      return { type: "UNUSABLE", message: `만료일: ${this.expiriationDate}` };
+      return { type: "UNUSABLE", message: "만료된 쿠폰입니다" };
 
     const kstDate = new Date(new Date().getTime() + 9 * 60 * 60 * 1000);
     const now = kstDate.toISOString().slice(11, 16);
 
     if (now < this.rule.startAt || now >= this.rule.endAt)
-      return {
-        type: "UNUSABLE",
-        message: `사용시간 오전${this.rule.startAt}부터 ${this.rule.endAt}까지`,
-      };
+      return { type: "UNUSABLE", message: "사용 가능 시간이 아니에요" };
     return { type: "USABLE", message: "" };
   }
 

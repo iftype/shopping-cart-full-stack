@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { type Coupon, calculateDiscount } from "../../entites/checkout/model";
+import { type Coupon, calculateDiscount, couponRuleText } from "../../entites/checkout/model";
 import { CheckBox } from "../../shared/CheckBox";
 import { BottomButton } from "../../shared/BottomButton";
 import { ToolTip } from "../../shared/ToolTip";
@@ -39,6 +39,7 @@ export const CouponSelect = ({ coupons, orderPrice, onApply }: CouponSelectProps
           const selected = selectedIds.includes(coupon.id);
           const usable = coupon.status.type === "USABLE";
           const disabled = !usable || (!selected && selectedIds.length >= MAX_SELECT);
+          const ruleText = couponRuleText(coupon.rule);
 
           return (
             <li key={coupon.id} className={`${styles.item} ${!usable ? styles.unusable : ""}`}>
@@ -51,6 +52,7 @@ export const CouponSelect = ({ coupons, orderPrice, onApply }: CouponSelectProps
                 <span className={styles.name}>{coupon.name}</span>
               </div>
               <p className={styles.detail}>만료일: {coupon.expirationDate}</p>
+              {ruleText && <p className={styles.detail}>{ruleText}</p>}
               {coupon.status.message && <p className={styles.detail}>{coupon.status.message}</p>}
             </li>
           );

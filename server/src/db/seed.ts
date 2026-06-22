@@ -31,7 +31,7 @@ export function seed(db: InMemoryDB): void {
 
   db.COUPON_TABLE.push({
     id: "BOGO",
-    name: "2+1 쿠폰",
+    name: "2개 구매 시 1개 무료 쿠폰",
     expiriation_date: new Date("2026-06-30"),
     rule_type: null,
     limit_price: null,
@@ -44,7 +44,7 @@ export function seed(db: InMemoryDB): void {
 
   db.COUPON_TABLE.push({
     id: "FREESHIPPING",
-    name: "무료 배송 쿠폰",
+    name: "5만원 이상 구매 시 무료 배송 쿠폰",
     expiriation_date: new Date("2026-08-31"),
     rule_type: "LOW_PRICE",
     limit_price: 50000, // 최소 주문 금액
@@ -57,7 +57,7 @@ export function seed(db: InMemoryDB): void {
 
   db.COUPON_TABLE.push({
     id: "MIRACLESALE",
-    name: "30% 타임 세일 쿠폰",
+    name: "미라클모닝 30% 할인 쿠폰",
     expiriation_date: new Date("2026-07-31"),
     rule_type: "TIME",
     limit_price: null,
