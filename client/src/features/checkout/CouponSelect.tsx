@@ -1,19 +1,19 @@
 import { useState } from "react";
-import type { Coupon } from "../../entites/checkout/model";
+import { type Coupon, calculateDiscount } from "../../entites/checkout/model";
 import { CheckBox } from "../../shared/CheckBox";
 import { BottomButton } from "../../shared/BottomButton";
-import styles from "./CouponSelect.module.css";
 import { ToolTip } from "../../shared/ToolTip";
+import styles from "./CouponSelect.module.css";
 
 const MAX_SELECT = 2;
 
 interface CouponSelectProps {
   coupons: Coupon[];
-  discountPrice: number;
+  orderPrice: number;
   onApply: (selectedIds: string[]) => void;
 }
 
-export const CouponSelect = ({ coupons, discountPrice, onApply }: CouponSelectProps) => {
+export const CouponSelect = ({ coupons, orderPrice, onApply }: CouponSelectProps) => {
   const [selectedIds, setSelectedIds] = useState<string[]>(() =>
     coupons.filter((coupon) => coupon.status.apply).map((coupon) => coupon.id),
   );
@@ -25,6 +25,9 @@ export const CouponSelect = ({ coupons, discountPrice, onApply }: CouponSelectPr
       return [...prev, id];
     });
   };
+
+  const selectedCoupons = coupons.filter((coupon) => selectedIds.includes(coupon.id));
+  const estimatedDiscount = calculateDiscount(selectedCoupons, orderPrice);
 
   return (
     <div>
@@ -56,7 +59,7 @@ export const CouponSelect = ({ coupons, discountPrice, onApply }: CouponSelectPr
 
       <BottomButton
         onClick={() => onApply(selectedIds)}
-        text={`총 ${discountPrice.toLocaleString()}원 할인 쿠폰 사용하기`}
+        text={`총 ${estimatedDiscount.toLocaleString()}원 할인 쿠폰 사용하기`}
       />
     </div>
   );
