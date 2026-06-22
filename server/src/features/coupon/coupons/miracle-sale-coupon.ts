@@ -51,8 +51,7 @@ export default class MiracleSaleCoupon implements Coupon {
   canUse(): CouponStatus {
     if (new Date() > this.expiriationDate)
       return { type: "UNUSABLE", message: `만료일: ${this.expiriationDate}` };
-    
-    // 배포 서버(UTC)에서도 KST(UTC+9) 기준으로 정확히 시:분(HH:mm)을 판별하기 위한 타임존 처리
+
     const kstDate = new Date(new Date().getTime() + 9 * 60 * 60 * 1000);
     const now = kstDate.toISOString().slice(11, 16);
 
@@ -70,7 +69,8 @@ export default class MiracleSaleCoupon implements Coupon {
 
   execute(args: CouponProps): CouponResult {
     const { summary } = args;
-    const discountRate = Math.floor((summary.orderPrice * this.discountType.discountRate) / 100);
+    const discountedPrice = summary.orderPrice - summary.discountPrice;
+    const discountRate = Math.floor((discountedPrice * this.discountType.discountRate) / 100);
     const discountPrice = summary.discountPrice + discountRate;
     return {
       ...args,
