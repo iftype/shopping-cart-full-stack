@@ -18,19 +18,27 @@ const readCheckedProductIds = (): number[] => {
 };
 
 export const CheckoutPage = () => {
-  const navigate = useNavigate();
-
   const [checkedProductIds] = useState(readCheckedProductIds);
-  const { state } = useCheckout(checkedProductIds);
-
-  const [isCouponModalOpen, setIsCouponModalOpen] = useState(false);
   const [hardDeliveryPlace, setHardDeliveryPlace] = useState(false);
+  const [selectedCouponIds, setSelectedCouponIds] = useState<string[]>([]);
+  const { state } = useCheckout(checkedProductIds, hardDeliveryPlace, selectedCouponIds);
+  const navigate = useNavigate();
+  const [isCouponModalOpen, setIsCouponModalOpen] = useState(false);
 
   if (checkedProductIds.length === 0) {
     return <Navigate to="/" replace />;
   }
 
-  const handleOrder = () => navigate("/result");
+  const handleOrder = () => {
+    if (state.status !== "success") return;
+    navigate("/result", {
+      state: {
+        items: state.data.selectedItems,
+        gifts: state.data.gifts,
+        totalPrice: state.data.priceSummary.totalPrice,
+      },
+    });
+  };
 
   return (
     <>
@@ -53,6 +61,7 @@ export const CheckoutPage = () => {
           />
           <CheckoutSection
             items={state.data.selectedItems}
+            gifts={state.data.gifts}
             onOpenCoupon={() => setIsCouponModalOpen(true)}
           />
           <DeliveryInfo
@@ -63,8 +72,11 @@ export const CheckoutPage = () => {
           <Modal isOpen={isCouponModalOpen} onClose={() => setIsCouponModalOpen(false)}>
             <CouponSelect
               coupons={state.data.couponsInfo}
-              discountPrice={state.data.priceSummary.discountPrice}
-              onApply={() => setIsCouponModalOpen(false)}
+              orderPrice={state.data.priceSummary.orderPrice}
+              onApply={(selectedIds) => {
+                setSelectedCouponIds(selectedIds);
+                setIsCouponModalOpen(false);
+              }}
             />
           </Modal>
         </>

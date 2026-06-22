@@ -10,7 +10,7 @@
   width: 112px;
   height: 112px;
   border-radius: 8px;
-  background: #DCE3EA;
+  background: #dce3ea;
   overflow: hidden;
   flex-shrink: 0;
   margin-right: 24px;
@@ -32,13 +32,13 @@
 .name {
   font-weight: 500;
   font-size: 12px;
-  color: #353C49;
+  color: #353c49;
 }
 
 .price {
   font-weight: 700;
   font-size: 24px;
-  color: #0A0D13;
+  color: #0a0d13;
 }
 
 .stepper {
@@ -51,7 +51,7 @@
 .stepperBtn {
   width: 24px;
   height: 24px;
-  border: 1px solid #0000001A;
+  border: 1px solid #0000001a;
   background: #ffffff;
   font-size: 14px;
   cursor: pointer;
@@ -62,7 +62,7 @@
 }
 
 .stepperBtn:disabled {
-  background: #BEBEBE;
+  background: #bebebe;
   cursor: not-allowed;
   color: #ffffff;
 }
@@ -72,5 +72,12 @@
   text-align: center;
   font-size: 12px;
   font-weight: 500;
-  color: #0A0D13;
+  color: #0a0d13;
+}
+
+.giftText {
+  color: #ff0000;
+  font-weight: 700;
+  margin-left: 6px;
+  font-size: 13px;
 }

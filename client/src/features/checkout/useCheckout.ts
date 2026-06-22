@@ -6,7 +6,11 @@ type CheckoutState =
   | { status: "success"; data: Checkout }
   | { status: "error"; error: string };
 
-export const useCheckout = (checkedProductIds: number[]) => {
+export const useCheckout = (
+  checkedProductIds: number[],
+  hardDeliveryPlace: boolean,
+  selectedCouponIds: string[],
+) => {
   const [state, setState] = useState<CheckoutState>({
     status: "loading",
   });
@@ -18,8 +22,8 @@ export const useCheckout = (checkedProductIds: number[]) => {
       try {
         const data = await checkoutApi({
           checked_product_list: checkedProductIds.map(String),
-          hard_delivery_place: false,
-          selected_coupons: [],
+          hard_delivery_place: hardDeliveryPlace,
+          selected_coupons: selectedCouponIds,
         });
         setState({
           status: "success",
@@ -37,7 +41,7 @@ export const useCheckout = (checkedProductIds: number[]) => {
       }
     }
     init();
-  }, [checkedProductIds]);
+  }, [checkedProductIds, hardDeliveryPlace, selectedCouponIds]);
 
   return { state };
 };
