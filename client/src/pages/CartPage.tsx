@@ -25,7 +25,7 @@ export const CartPage = () => {
 
   return (
     <>
-      <Header />
+      <Header logo="SHOP" onClick={() => navigate("/")} />
       {serverError && <p>에러 토스트:{serverError}</p>}
       {status === "loading" && <Spinner />}
       {state.status === "error" && <ErrorInfo message={state.error} />}

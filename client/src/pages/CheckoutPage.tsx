@@ -42,7 +42,7 @@ export const CheckoutPage = () => {
 
   return (
     <>
-      <Header />
+      <Header logo={"<-"} onClick={() => navigate(-1)} />
       {state.status === "loading" && <Spinner />}
       {state.status === "error" && <ErrorInfo message={state.error} />}
       {state.status === "success" && (
