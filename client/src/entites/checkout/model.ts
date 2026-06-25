@@ -25,7 +25,7 @@ export type Coupon = {
   id: string;
   name: string;
   expirationDate: string;
-  rule: Rule | null;
+  rule?: Rule;
   status: {
     type: "UNUSABLE" | "USABLE";
     message: string;
