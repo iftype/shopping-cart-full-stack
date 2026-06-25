@@ -33,6 +33,11 @@ interface CheckoutDto {
   gifts: { product_id: string; quantity: number }[];
 }
 
+export interface CheckoutErrorResponse {
+  result: "error";
+  message: string;
+}
+
 const BASE_URL = import.meta.env?.VITE_API_URL ?? "";
 
 const toCheckoutDto = (req: CheckoutRequest): CheckoutProps => ({
@@ -83,7 +88,8 @@ export const checkoutApi = async (req: CheckoutRequest): Promise<Checkout> => {
     body: JSON.stringify(toCheckoutDto(req)),
   });
   if (!response.ok) {
-    throw new Error("주문 정보 계산에 실패했습니다.");
+    const error: CheckoutErrorResponse = await response.json();
+    throw new Error(error.message);
   }
   const json: CheckoutDto = await response.json();
   return toCheckout(json);
