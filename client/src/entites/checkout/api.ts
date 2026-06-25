@@ -1,4 +1,5 @@
 import { formatDate } from "../../shared/date";
+import { http } from "../../shared/http";
 import type { CartItem, Checkout, Coupon, Discount, Rule } from "./model";
 
 export interface CheckoutRequest {
@@ -32,13 +33,6 @@ interface CheckoutDto {
   best_coupons: string[];
   gifts: { product_id: string; quantity: number }[];
 }
-
-export interface CheckoutErrorResponse {
-  result: "error";
-  message: string;
-}
-
-const BASE_URL = import.meta.env?.VITE_API_URL ?? "";
 
 const toCheckoutDto = (req: CheckoutRequest): CheckoutProps => ({
   checked_product_list: req.checkedProductIds.map(String),
@@ -82,15 +76,9 @@ const toCheckout = (res: CheckoutDto): Checkout => ({
 });
 
 export const checkoutApi = async (req: CheckoutRequest): Promise<Checkout> => {
-  const response = await fetch(`${BASE_URL}/checkout`, {
+  const dto = await http<CheckoutDto>("/checkout", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(toCheckoutDto(req)),
   });
-  if (!response.ok) {
-    const error: CheckoutErrorResponse = await response.json();
-    throw new Error(error.message);
-  }
-  const json: CheckoutDto = await response.json();
-  return toCheckout(json);
+  return toCheckout(dto);
 };
