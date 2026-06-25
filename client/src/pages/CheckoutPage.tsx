@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Navigate, useNavigate } from "react-router";
 import { useCheckout } from "../features/checkout/useCheckout";
+import { useCheckedProductIds } from "../features/checkout/useCheckedProductIds";
 import { Header } from "../shared/Header";
 import { Spinner } from "../shared/Spinner";
 import { ErrorInfo } from "../shared/ErrorInfo";
@@ -12,13 +13,9 @@ import { DeliveryInfo } from "../features/checkout/DeliveryInfo";
 import { CheckoutSummary } from "../features/checkout/CheckoutSummary";
 import { CouponSelect } from "../features/checkout/CouponSelect";
 
-const readCheckedProductIds = (): number[] => {
-  const saved = localStorage.getItem("checked");
-  return saved ? JSON.parse(saved) : [];
-};
-
 export const CheckoutPage = () => {
-  const [checkedProductIds] = useState(readCheckedProductIds);
+  const checkedProductIds = useCheckedProductIds();
+
   const [hardDeliveryPlace, setHardDeliveryPlace] = useState(false);
   const [selectedCouponIds, setSelectedCouponIds] = useState<string[]>([]);
   const { state } = useCheckout(checkedProductIds, hardDeliveryPlace, selectedCouponIds);
