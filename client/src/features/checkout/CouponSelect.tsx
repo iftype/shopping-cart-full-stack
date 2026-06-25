@@ -32,7 +32,6 @@ export const CouponSelect = ({ coupons, orderPrice, onApply }: CouponSelectProps
 
   return (
     <div>
-      <h2 className={styles.title}>쿠폰을 선택해 주세요</h2>
       <ToolTip text={`쿠폰은 최대 ${MAX_SELECT}개까지 사용할 수 있습니다.`} />
 
       <ul className={styles.list}>

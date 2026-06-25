@@ -26,6 +26,8 @@ export const CheckoutPage = () => {
     return <Navigate to="/" replace />;
   }
 
+  const closeCouponModal = () => setIsCouponModalOpen(false);
+
   const handleOrder = () => {
     if (state.status !== "success") return;
     navigate("/result", {
@@ -66,13 +68,17 @@ export const CheckoutPage = () => {
             onToggle={() => setHardDeliveryPlace((prev) => !prev)}
           />
           <CheckoutSummary {...state.data.priceSummary} />
-          <Modal isOpen={isCouponModalOpen} onClose={() => setIsCouponModalOpen(false)}>
+          <Modal isOpen={isCouponModalOpen} onClose={closeCouponModal}>
+            <Modal.Header>
+              <Modal.Title>쿠폰을 선택해 주세요</Modal.Title>
+              <Modal.Close onClose={closeCouponModal}>X</Modal.Close>
+            </Modal.Header>
             <CouponSelect
               coupons={state.data.couponsInfo}
               orderPrice={state.data.priceSummary.orderPrice}
               onApply={(selectedIds) => {
                 setSelectedCouponIds(selectedIds);
-                setIsCouponModalOpen(false);
+                closeCouponModal();
               }}
             />
           </Modal>

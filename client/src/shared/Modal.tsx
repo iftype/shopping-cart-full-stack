@@ -16,12 +16,25 @@ export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
 
   return (
     <div className={styles.overlay} onClick={handleOverlayClick}>
-      <div className={styles.content}>
-        <button className={styles.close} onClick={onClose} aria-label="닫기">
-          ✕
-        </button>
-        {children}
-      </div>
+      <div className={styles.content}>{children}</div>
     </div>
   );
 };
+
+const ModalHeader = ({ children }: { children: ReactNode }) => (
+  <div className={styles.header}>{children}</div>
+);
+
+const ModalTitle = ({ children }: { children: ReactNode }) => (
+  <h2 className={styles.title}>{children}</h2>
+);
+
+const ModalClose = ({ onClose, children }: { onClose: () => void; children: ReactNode }) => (
+  <button className={styles.close} onClick={onClose} aria-label="닫기">
+    {children}
+  </button>
+);
+
+Modal.Header = ModalHeader;
+Modal.Title = ModalTitle;
+Modal.Close = ModalClose;
