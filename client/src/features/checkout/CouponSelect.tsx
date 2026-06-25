@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { Coupon } from "../../entites/checkout/model";
-import { calculateDiscount, couponRuleText } from "../../entites/checkout/lib";
+import { calculateDiscount, getCouponRuleText } from "../../entites/checkout/lib";
 import { CheckBox } from "../../shared/CheckBox";
 import { BottomButton } from "../../shared/BottomButton";
 import { ToolTip } from "../../shared/ToolTip";
@@ -40,7 +40,7 @@ export const CouponSelect = ({ coupons, orderPrice, onApply }: CouponSelectProps
           const selected = selectedIds.includes(coupon.id);
           const usable = coupon.status.type === "USABLE";
           const disabled = !usable || (!selected && selectedIds.length >= MAX_SELECT);
-          const ruleText = couponRuleText(coupon.rule);
+          const ruleText = getCouponRuleText(coupon.rule);
 
           return (
             <li key={coupon.id} className={`${styles.item} ${!usable ? styles.unusable : ""}`}>

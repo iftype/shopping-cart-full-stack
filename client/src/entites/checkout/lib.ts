@@ -2,7 +2,7 @@ import { formatHour } from "../../shared/date";
 import type { Coupon, Rule } from "./model";
 
 // 쿠폰 사용 조건을 한국어 안내 문구로 변환 (조건 없는 쿠폰은 null)
-export const couponRuleText = (rule: Rule | null): string | null => {
+export const getCouponRuleText = (rule: Rule | null): string | null => {
   if (!rule) return null;
   if (rule.type === "LOW_PRICE") return `최소 주문 금액: ${rule.price.toLocaleString()}원`;
   return `사용 가능 시간: ${formatHour(rule.startAt)}부터 ${formatHour(rule.endAt)}까지`;
