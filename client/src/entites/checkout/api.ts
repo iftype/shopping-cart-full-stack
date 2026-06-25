@@ -18,7 +18,7 @@ interface CheckoutDto {
     id: string;
     name: string;
     expiriation_date: string;
-    rule: Rule | null;
+    rule?: Rule;
     status: Coupon["status"];
     discount: Discount;
   }[];
