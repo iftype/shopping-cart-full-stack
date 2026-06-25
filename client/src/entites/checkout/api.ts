@@ -1,7 +1,13 @@
 import { formatDate } from "../../shared/date";
 import type { CartItem, Checkout, Coupon, Discount, Rule } from "./model";
 
-export interface CheckoutProps {
+export interface CheckoutRequest {
+  checkedProductIds: number[];
+  hardDeliveryPlace: boolean;
+  selectedCouponIds: string[];
+}
+
+interface CheckoutProps {
   checked_product_list: string[];
   hard_delivery_place: boolean;
   selected_coupons: string[];
@@ -28,6 +34,12 @@ interface CheckoutDto {
 }
 
 const BASE_URL = import.meta.env?.VITE_API_URL ?? "";
+
+const toCheckoutDto = (req: CheckoutRequest): CheckoutProps => ({
+  checked_product_list: req.checkedProductIds.map(String),
+  hard_delivery_place: req.hardDeliveryPlace,
+  selected_coupons: req.selectedCouponIds,
+});
 
 const toCheckout = (res: CheckoutDto): Checkout => ({
   priceSummary: {
@@ -64,11 +76,11 @@ const toCheckout = (res: CheckoutDto): Checkout => ({
   })),
 });
 
-export const checkoutApi = async (props: CheckoutProps): Promise<Checkout> => {
+export const checkoutApi = async (req: CheckoutRequest): Promise<Checkout> => {
   const response = await fetch(`${BASE_URL}/checkout`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(props),
+    body: JSON.stringify(toCheckoutDto(req)),
   });
   if (!response.ok) {
     throw new Error("주문 정보 계산에 실패했습니다.");

@@ -22,9 +22,9 @@ export const useCheckout = (
     async function init() {
       try {
         const data = await checkoutApi({
-          checked_product_list: checkedProductIds.map(String),
-          hard_delivery_place: hardDeliveryPlace,
-          selected_coupons: selectedCouponIds,
+          checkedProductIds,
+          hardDeliveryPlace,
+          selectedCouponIds,
         });
         setState({
           status: "success",
