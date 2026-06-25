@@ -1,4 +1,5 @@
-import type { CartItem, Coupon, Discount, Gift, Rule, Summary } from "./model";
+import { formatDate } from "../../shared/date";
+import type { CartItem, Checkout, Coupon, Discount, Rule } from "./model";
 
 export interface CheckoutProps {
   checked_product_list: string[];
@@ -26,18 +27,7 @@ interface CheckoutDto {
   gifts: { product_id: string; quantity: number }[];
 }
 
-export interface Checkout {
-  priceSummary: Summary;
-  selectedItems: CartItem[];
-  couponsInfo: Coupon[];
-  bestCoupons: string[];
-  gifts: Gift[];
-}
-
 const BASE_URL = import.meta.env?.VITE_API_URL ?? "";
-
-const formatDate = (iso: string) =>
-  new Date(iso).toLocaleDateString("ko-KR", { year: "numeric", month: "long", day: "numeric" });
 
 const toCheckout = (res: CheckoutDto): Checkout => ({
   priceSummary: {

@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { type Coupon, calculateDiscount, couponRuleText } from "../../entites/checkout/model";
+import type { Coupon } from "../../entites/checkout/model";
+import { calculateDiscount, couponRuleText } from "../../entites/checkout/lib";
 import { CheckBox } from "../../shared/CheckBox";
 import { BottomButton } from "../../shared/BottomButton";
 import { ToolTip } from "../../shared/ToolTip";

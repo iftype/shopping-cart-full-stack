@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { checkoutApi, type Checkout } from "../../entites/checkout/api";
+import { checkoutApi } from "../../entites/checkout/api";
+import type { Checkout } from "../../entites/checkout/model";
 
 type CheckoutState =
   | { status: "loading" }
