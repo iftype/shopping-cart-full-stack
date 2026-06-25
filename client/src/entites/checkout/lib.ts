@@ -1,5 +1,11 @@
 import { formatHour } from "../../shared/date";
-import type { Coupon, Rule } from "./model";
+import type { CartItem, CheckoutItem, Coupon, Gift, Rule } from "./model";
+
+export const toCheckoutItems = (items: CartItem[], gifts: Gift[]): CheckoutItem[] =>
+  items.map((item) => ({
+    ...item,
+    giftQuantity: gifts.find((gift) => gift.productId === item.id)?.quantity ?? 0,
+  }));
 
 // 쿠폰 사용 조건을 한국어 안내 문구로 변환 (조건 없는 쿠폰은 null)
 export const getCouponRuleText = (rule: Rule | null | undefined): string | null => {

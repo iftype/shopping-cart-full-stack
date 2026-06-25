@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Navigate, useNavigate } from "react-router";
 import { useCheckout } from "../features/checkout/useCheckout";
 import { useCheckedProductIds } from "../features/checkout/useCheckedProductIds";
+import { toCheckoutItems } from "../entites/checkout/lib";
 import { Header } from "../shared/Header";
 import { Spinner } from "../shared/Spinner";
 import { ErrorInfo } from "../shared/ErrorInfo";
@@ -59,8 +60,7 @@ export const CheckoutPage = () => {
             }
           />
           <CheckoutSection
-            items={state.data.selectedItems}
-            gifts={state.data.gifts}
+            items={toCheckoutItems(state.data.selectedItems, state.data.gifts)}
             onOpenCoupon={() => setIsCouponModalOpen(true)}
           />
           <DeliveryInfo

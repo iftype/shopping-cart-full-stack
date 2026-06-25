@@ -15,6 +15,8 @@ export type CartItem = {
   quantity: number;
 };
 
+export type CheckoutItem = CartItem & { giftQuantity: number };
+
 export type Discount = { type: "RATE"; rate: number } | { type: "FIXED"; amount: number };
 
 export type Rule =
